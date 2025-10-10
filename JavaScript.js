@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let players = [];
     const actions = {
-        'Servicio (S#) Positivo': 1, 'Ataque (A#) Positivo': 1, 'Bloqueo (B#) Positivo': 1, 'Recepción (R#) Positiva': 1, 'Coloque (C#) Positivo': 1, 
-        'Servicio (S=) Negativo': -1, 'Ataque (A=) Negativo': -1, 'Bloqueo (B=) Negativo': -1, 'Recepción (R=) Negativo': -1, 'Coloque (C=) Negativo': -1, 
+        'S# Servicio Positivo': 1, 'A# Ataque Positivo': 1, 'B# Bloqueo Positivo': 1, 'R# Recepción Positiva': 1, 'C# Coloque Positivo': 1, 
+        'S= Servicio Negativo': -1, 'A= Ataque Negativo': -1, 'B= Bloqueo Negativo': -1, 'R= Recepción Negativo': -1, 'C= Coloque Negativo': -1, 
     };
     
     // FUNCIÓN: Guardar datos en localStorage
@@ -83,10 +83,10 @@ document.addEventListener('DOMContentLoaded', () => {
             header.className = 'grid grid-cols-[minmax(0,2fr)_repeat(4,minmax(0,1fr))] gap-4 font-semibold text-gray-400 text-sm mb-2 px-3';
             header.innerHTML = `
                 <span class="text-left">Atleta</span>
-                <span class="text-center">Positivos</span>
-                <span class="text-center">Negativos</span>
-                <span class="text-right">Total</span>
-                <span class="text-center">Efic. %</span>
+                <span class="text-center">Pos</span>
+                <span class="text-center">Neg</span>
+                <span class="text-right">Efec</span>
+                <span class="text-center"> % </span>
             `;
             scoresContainer.appendChild(header);
 
@@ -233,5 +233,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
     });
+
 
 });
