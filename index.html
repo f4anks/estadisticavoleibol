@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="icon" type="image/png" href="img/logo.png">
-<link rel="apple-touch-icon" href="img/logo.png">
+<link rel="icon" type="image/png" href="./img/logo.png">
+<link rel="apple-touch-icon" href="./img/logo.png">
 
 <title>CV Stats - Protected Offline</title>
-<script src="libs/tailwind.js"></script>
-<script src="libs/charts.js"></script>
+<script src="./libs/tailwind.js"></script>
+<script src="./libs/charts.js"></script>
 
 <style>:root{--b:#0056FF}body{font-family:Inter,sans-serif;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background:#F7F8FA}.card{background:#fff;border:1px solid #d1d5db;box-shadow:0 4px 10px -1px rgba(0,86,255,.1)}.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:.75rem 1.5rem;border-radius:.5rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}.v{opacity:1}input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}</style></head>
 <body class="p-4 text-gray-800" oncontextmenu="return false">
@@ -25,14 +25,12 @@
 
 <script>
 (function(){
-    // Bloqueo de inspección y seguridad
     const _0x1=[window,'keydown','keyCode','ctrlKey','shiftKey','preventDefault','DOMContentLoaded','vP','vM','vS','st','c1','c2','sum','ps','as','add','pN','pM','f','rs','ra'];
     document.addEventListener('keydown',function(e){if(e[_0x1[2]]==123||(e[_0x1[3]]&&e[_0x1[4]]&&(e[_0x1[2]]==73||e[_0x1[2]]==74))||(e[_0x1[3]]&&e[_0x1[2]]==85)){e[_0x1[5]]();return false}});
     
     let _vP=[],_vM=[],_vS=[],_b1=null,_b2=null;
     const g=id=>document.getElementById(id);
     
-    // Diccionarios codificados para seguridad
     const _0xa={'\x53\x65\x72\x76\x69\x63\x69\x6f\x20\x42\x75\x65\x6e\x6f\x20\x53\x23':1,'\x41\x74\x61\x71\x75\x65\x20\x42\x75\x65\x6e\x6f\x20\x41\x23':1,'\x42\x6c\x6f\x71\x75\x65\x6f\x20\x42\x75\x65\x6e\x6f\x20\x42\x23':1,'\x43\x6f\x6c\x6f\x71\x75\x65\x20\x42\x75\x65\x6e\x6f\x20\x43\x23':1,'\x53\x65\x72\x76\x69\x63\x69\x6f\x20\x4d\x61\x6c\x6f\x20\x53\x3d':-1,'\x41\x74\x61\x71\x75\x65\x20\x4d\x61\x6c\x6f\x20\x41\x3d':-1,'\x42\x6c\x6f\x71\x75\x65\x6f\x20\x4d\x61\x6c\x6f\x20\x42\x3d':-1,'\x52\x65\x63\x65\x70\x63\x69\x6f\x6e\x20\x4d\x61\x6c\x6f\x20\x52\x3d':-1,'\x43\x6f\x6c\x6f\x71\x75\x65\x20\x4d\x61\x6c\x6f\x20\x43\x3d':-1,'\x44\x65\x66\x65\x6e\x73\x61\x20\x4d\x61\x6c\x6f\x20\x44\x3d':-1};
     const _0xo={S:'\x53\x65\x72\x76\x69\x63\x69\x6f',A:'\x41\x74\x61\x71\x75\x65',B:'\x42\x6c\x6f\x71\x75\x65\x6f',R:'\x52\x65\x63\x65\x70\x63\x69\x6f\x6e',C:'\x43\x6f\x6c\x6f\x71\x75\x65',D:'\x44\x65\x66\x65\x6e\x73\x61'};
     const P={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},K={scales:{y:{ticks:{stepSize:1}}},responsive:1,maintainAspectRatio:0};
@@ -46,6 +44,9 @@
         _vS.forEach(l=>{let k=d[l.playerNumber];if(k){let v=_0xa[l.action],t=l.action.charAt(l.action.length-2);v>0?k.p++:k.n++;if(!k.a[t])k.a[t]={p:0,n:0};v>0?k.a[t].p++:k.a[t].n++}});
         _vP.forEach(p=>{let k=d[p.number],dt='';Object.keys(k.a).forEach(x=>dt+=`<span class="mr-2">${x}:${k.a[x].p}|${k.a[x].n}</span>`);s.innerHTML+=`<div class="bg-gray-100 p-2 rounded text-xs"><div class="flex justify-between font-bold"><span>#${p.number} ${p.name}</span><span>Dif: ${k.p-k.n}</span></div><div class="text-[9px] text-gray-500">${dt}</div></div>`});
         
+        // Verificamos si Chart existe antes de intentar dibujar (Vital para Offline)
+        if(typeof Chart === 'undefined') return;
+
         const x1=g(_0x1[11]).getContext('2d'),x2=g(_0x1[12]).getContext('2d'),l=Object.values(_0xo);
         let v1={p:[],n:[]},v2={p:[],n:[]},tp=0,tn=0;
         Object.keys(_0xo).forEach(k=>{let p=0,n=0,ap=0,an=0;_vS.forEach(z=>{if(z.action.charAt(z.action.length-2)===k)_0xa[z.action]>0?p++:n++});_vM.forEach(z=>{if(z.action.charAt(z.action.length-2)===k){if(_0xa[z.action]>0){ap++;tp++}else{an++;tn++}}});v1.p.push(p);v1.n.push(n);v2.p.push(ap);v2.n.push(an)});
