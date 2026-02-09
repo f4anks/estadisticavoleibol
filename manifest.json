@@ -1,12 +1,6 @@
 {
-  "name": "Control Voley Stats",
   "short_name": "CV Stats",
-  "description": "Sistema de estadísticas para voleibol - Modo Offline",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#F7F8FA",
-  "theme_color": "#0056FF",
+  "name": "Control Voley Stats",
   "icons": [
     {
       "src": "./img/logo.png",
@@ -17,8 +11,13 @@
     {
       "src": "./img/logo.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
-  ]
+  ],
+  "start_url": "./index.html",
+  "display": "standalone",
+  "theme_color": "#0056FF",
+  "background_color": "#F7F8FA",
+  "scope": "./",
+  "orientation": "portrait"
 }
