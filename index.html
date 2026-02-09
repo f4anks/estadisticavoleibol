@@ -7,13 +7,12 @@
 <script src="./libs/tailwind.js"></script>
 <script src="./libs/charts.js"></script>
 
-<style>:root{--b:#0056FF}body{font-family:Inter,sans-serif;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background:#F7F8FA}.card{background:#fff;border:1px solid #d1d5db;box-shadow:0 4px 10px -1px rgba(0,86,255,.1)}.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:.75rem 1.5rem;border-radius:.5rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999}.v{opacity:1}input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-/* Estilo para ocultar el área de instalación */
+<style>:root{--b:#0056FF}body{font-family:Inter,sans-serif;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;background:#F7F8FA}.card{background:#fff;border:1px solid #d1d5db;box-shadow:0 4px 10px -1px rgba(0,86,255,.1)}.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:.75rem 1.5rem;border-radius:.5rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9999}.v{opacity:1}input::-webkit-inner-spin-button,input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 .hidden { display: none; }</style></head>
 <body class="p-4 text-gray-800" oncontextmenu="return false">
 
     <div id="installArea" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-[1000] w-full max-w-xs px-4">
-        <button id="btnInstall" class="w-full bg-yellow-500 text-black font-bold py-3 rounded-full shadow-2xl border-2 border-white">
+        <button id="btnInstall" class="w-full bg-yellow-500 text-black font-bold py-3 rounded-full shadow-2xl border-2 border-white animate-bounce">
             📲 INSTALAR APLICACIÓN
         </button>
     </div>
@@ -45,7 +44,7 @@
     const _0xo={S:'\x53\x65\x72\x76\x69\x63\x69\x6f',A:'\x41\x74\x61\x71\x75\x65',B:'\x42\x6c\x6f\x71\x75\x65\x6f',R:'\x52\x65\x63\x65\x70\x63\x69\x6f\x6e',C:'\x43\x6f\x6c\x6f\x71\x75\x65',D:'\x44\x65\x66\x65\x6e\x73\x61'};
     const P={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},K={scales:{y:{ticks:{stepSize:1}}},responsive:1,maintainAspectRatio:0};
 
-    function _t(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.classList.add('v'),10);setTimeout(()=>{t.classList.remove('v');setTimeout(()=>t.remove(),300)},2000)}
+    function _t(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.classList.add('v'),10);setTimeout(()=>{t.classList.remove('v');setTimeout(()=>t.remove(),300)},3000)}
     function _s(){localStorage.setItem(_0x1[7],JSON.stringify(_vP));localStorage.setItem(_0x1[8],JSON.stringify(_vM));localStorage.setItem(_0x1[9],JSON.stringify(_vS))}
     
     function _u(){
@@ -71,12 +70,23 @@
         g(_0x1[16]).onclick=()=>{let n=parseInt(g(_0x1[17]).value),m=g(_0x1[18]).value;if(n&&m){_vP.push({number:n,name:m});_s();rP();_u();g(_0x1[17]).value='';g(_0x1[18]).value='';_t('OK')}};
         g(_0x1[19]).onsubmit=e=>{e.preventDefault();if(ps.value){let l={playerNumber:parseInt(ps.value),action:as.value};_vM.push(l);_vS.push(l);_s();_u();_t('Reg')}};
         g(_0x1[20]).onclick=()=>{if(confirm('¿Limpiar Set?')){_vS=[];_s();_u()}};
-        g(_0x1[21]).onclick=()=>{if(confirm('¿Limpiar TODO?')){localStorage.clear();location.reload()}};
+        
+        // Lógica de Limpiar Todo con mensaje y cierre automático
+        g(_0x1[21]).onclick=()=>{
+            if(confirm('¿Limpiar TODO?')){
+                localStorage.clear();
+                _t('Datos de juego borrados, por favor vuelve a entrar a la Aplicación');
+                setTimeout(() => {
+                    window.close();
+                    setTimeout(() => { location.href = "about:blank"; }, 500);
+                }, 3000);
+            }
+        };
         rP();_u();
     })
 })();
 
-// LOGICA DE INSTALACION Y SERVICE WORKER
+// Lógica de instalación PWA
 let deferredPrompt;
 const installArea = document.getElementById('installArea');
 const btnInstall = document.getElementById('btnInstall');
@@ -100,6 +110,7 @@ window.addEventListener('appinstalled', () => {
     installArea.classList.add('hidden');
 });
 
+// Registro de Service Worker
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
