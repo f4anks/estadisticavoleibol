@@ -2,58 +2,171 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>CV Stats - Panel</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" href="./img/logo.png">
+    <link rel="apple-touch-icon" href="./img/logo.png">
+    <title>CV Stats - App Mode</title>
     <script src="./libs/tailwind.js"></script>
     <script src="./libs/charts.js"></script>
     <style>
-        body { background: #111827; color: white; -webkit-user-select: none; user-select: none; font-family: sans-serif; }
-        .app-card { background: #1f2937; border: 1px solid #374151; border-radius: 1.5rem; }
-        .input-dark { background: #111827; border: 1px solid #374151; color: white; }
-        ::-webkit-scrollbar { display: none; }
+        :root { --b: #0056FF; }
+        body { 
+            font-family: 'Inter', system-ui, sans-serif; 
+            -webkit-user-select: none; user-select: none; 
+            background: #F0F2F5; /* Un gris un poco más app-like */
+        }
+        .card { 
+            background: #fff; 
+            border-radius: 1.25rem; /* Bordes más redondeados tipo iPhone/Android */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .toast { 
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); 
+            background: rgba(31, 41, 55, 0.95); color: #fff; padding: 1rem 2rem; 
+            border-radius: 1rem; opacity: 0; transition: opacity 0.3s; 
+            pointer-events: none; z-index: 9999; backdrop-filter: blur(8px);
+        }
+        .v { opacity: 1; }
+        input::-webkit-inner-spin-button, input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        .hidden { display: none; }
+        select, input { outline: none !important; }
+        /* Mejora visual de inputs para que parezcan de App */
+        .app-input {
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            transition: all 0.2s;
+        }
+        .app-input:focus { border-color: var(--b); background: #fff; }
     </style>
 </head>
-<body class="p-4 pb-24" oncontextmenu="return false">
+<body class="p-4 pb-10 text-gray-800" oncontextmenu="return false">
 
-    <header class="flex justify-between items-center mb-6">
-        <a href="index.html" class="text-blue-500 font-bold px-2 py-1">✕</a>
-        <h1 class="text-lg font-black italic">CV <span class="text-blue-500">STATS</span></h1>
-        <div class="w-8"></div>
-    </header>
+    <div id="installArea" class="hidden fixed top-4 left-1/2 -translate-x-1/2 z-[1000] w-[90%] max-w-xs">
+        <button id="btnInstall" class="w-full bg-blue-600 text-white font-bold py-4 rounded-2xl shadow-2xl flex items-center justify-center gap-2 animate-pulse">
+            <span>📲</span> INSTALAR APLICACIÓN
+        </button>
+    </div>
 
-    <div class="max-w-md mx-auto space-y-4">
-        <div class="app-card p-4">
+    <main class="max-w-md mx-auto space-y-5">
+        <header class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-black italic tracking-tighter">CONTROL <span class="text-blue-600">VOLEY</span></h1>
+            <button onclick="if(confirm('¿Salir?')) window.close()" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl text-xs font-bold border border-red-100">Salir</button>
+        </header>
+
+        <div class="card p-5">
+            <h2 class="text-xs font-black uppercase tracking-widest text-blue-600 mb-4">Registro Atleta</h2>
             <div class="flex gap-2">
-                <input id="pN" placeholder="#" class="w-12 input-dark p-3 rounded-xl text-center font-bold" type="number">
-                <input id="pM" placeholder="Nombre Atleta" class="flex-grow input-dark p-3 rounded-xl" type="text">
-                <button id="add" class="bg-blue-600 px-4 rounded-xl font-bold">+</button>
+                <input id="pN" placeholder="N°" class="w-16 app-input font-bold text-center" type="number">
+                <input id="pM" placeholder="Nombre completo" class="flex-grow app-input" type="text">
+                <button id="add" class="bg-blue-600 text-white px-5 rounded-xl font-bold active:scale-95 transition-transform">+</button>
             </div>
         </div>
 
-        <form id="f" class="app-card p-4 space-y-3">
-            <select id="ps" class="w-full input-dark p-3 rounded-xl font-bold"></select>
-            <select id="as" class="w-full input-dark p-3 rounded-xl text-sm"></select>
-            <button class="w-full bg-blue-600 py-4 rounded-xl font-black uppercase shadow-lg shadow-blue-900/20 mt-2">Registrar Acción</button>
-        </form>
-
-        <div class="app-card p-4 h-64"><canvas id="c1"></canvas></div>
-        <div class="app-card p-4 h-80">
-            <div id="sum" class="text-center mb-2 text-xs font-bold text-blue-500"></div>
-            <canvas id="c2"></canvas>
+        <div class="card p-5">
+            <h2 class="text-xs font-black uppercase tracking-widest text-blue-600 mb-4">Registrar Jugada</h2>
+            <form id="f" class="space-y-3">
+                <select id="ps" class="w-full app-input font-bold text-gray-700"></select>
+                <select id="as" class="w-full app-input text-sm"></select>
+                <button class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black uppercase tracking-wide shadow-lg shadow-blue-200 active:scale-95 transition-transform">Registrar</button>
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <button type="button" id="rs" class="bg-amber-100 text-amber-700 py-3 rounded-xl text-xs font-bold border border-amber-200 uppercase">Limpiar Set</button>
+                    <button type="button" id="ra" class="bg-red-100 text-red-700 py-3 rounded-xl text-xs font-bold border border-red-200 uppercase">Limpiar Todo</button>
+                </div>
+            </form>
         </div>
 
-        <div id="st" class="space-y-2 pb-10"></div>
-    </div>
+        <div class="card p-5">
+            <h2 class="text-xs font-black uppercase tracking-widest text-blue-600 mb-4">Resumen Jugadores</h2>
+            <div id="st" class="space-y-3 max-h-60 overflow-y-auto pr-1"></div>
+        </div>
 
-    <nav class="fixed bottom-4 left-4 right-4 bg-gray-900/90 backdrop-blur-md border border-gray-700 h-16 rounded-2xl flex items-center justify-around shadow-2xl px-4">
-        <button id="rs" class="text-[10px] font-bold text-amber-500 uppercase">Limpiar Set</button>
-        <div class="w-px h-8 bg-gray-700"></div>
-        <button id="ra" class="text-[10px] font-bold text-red-500 uppercase">Borrar Todo</button>
-    </nav>
+        <div class="card p-4 h-72">
+            <canvas id="c1"></canvas>
+        </div>
+        
+        <div class="card p-4 h-96">
+            <div id="sum" class="text-center mb-3 text-xs font-black text-blue-600 bg-blue-50 py-2 rounded-lg"></div>
+            <canvas id="c2"></canvas>
+        </div>
+    </main>
 
 <script>
-    // Lógica interna (idéntica a la anterior pero adaptada a los nuevos IDs)
-    // Asegúrate de incluir el script del Service Worker al final si quieres que funcione offline aquí también.
+// Mantenemos tu lógica exacta (ofuscada y funcional)
+(function(){
+    const _0x1=[window,'keydown','keyCode','ctrlKey','shiftKey','preventDefault','DOMContentLoaded','vP','vM','vS','st','c1','c2','sum','ps','as','add','pN','pM','f','rs','ra'];
+    document.addEventListener('keydown',function(e){if(e[_0x1[2]]==123||(e[_0x1[3]]&&e[_0x1[4]]&&(e[_0x1[2]]==73||e[_0x1[2]]==74))||(e[_0x1[3]]&&e[_0x1[2]]==85)){e[_0x1[5]]();return false}});
+    
+    let _vP=[],_vM=[],_vS=[],_b1=null,_b2=null;
+    const g=id=>document.getElementById(id);
+    
+    const _0xa={'\x53\x65\x72\x76\x69\x63\x69\x6f\x20\x42\x75\x65\x6e\x6f\x20\x53\x23':1,'\x41\x74\x61\x71\x75\x65\x20\x42\x75\x65\x6e\x6f\x20\x41\x23':1,'\x42\x6c\x6f\x71\x75\x65\x6f\x20\x42\x75\x65\x6e\x6f\x20\x42\x23':1,'\x43\x6f\x6c\x6f\x71\x75\x65\x20\x42\x75\x65\x6e\x6f\x20\x43\x23':1,'\x53\x65\x72\x76\x69\x63\x69\x6f\x20\x4d\x61\x6c\x6f\x20\x53\x3d':-1,'\x41\x74\x61\x71\x75\x65\x20\x4d\x61\x6c\x6f\x20\x41\x3d':-1,'\x42\x6c\x6f\x71\x75\x65\x6f\x20\x4d\x61\x6c\x6f\x20\x42\x3d':-1,'\x52\x65\x63\x65\x70\x63\x69\x6f\x6e\x20\x4d\x61\x6c\x6f\x20\x52\x3d':-1,'\x43\x6f\x6c\x6f\x71\x75\x65\x20\x4d\x61\x6c\x6f\x20\x43\x3d':-1,'\x44\x65\x66\x65\x6e\x73\x61\x20\x4d\x61\x6c\x6f\x20\x44\x3d':-1};
+    const _0xo={S:'\x53\x65\x72\x76\x69\x63\x69\x6f',A:'\x41\x74\x61\x71\x75\x65',B:'\x42\x6c\x6f\x71\x75\x65\x6f',R:'\x52\x65\x63\x65\x70\x63\x69\x6f\x6e',C:'\x43\x6f\x6c\x6f\x71\x75\x65',D:'\x44\x65\x66\x65\x6e\x73\x61'};
+    const P={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},K={scales:{y:{ticks:{stepSize:1}}},responsive:1,maintainAspectRatio:0};
+
+    function _t(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.classList.add('v'),10);setTimeout(()=>{t.classList.remove('v');setTimeout(()=>t.remove(),300)},3000)}
+    function _s(){localStorage.setItem(_0x1[7],JSON.stringify(_vP));localStorage.setItem(_0x1[8],JSON.stringify(_vM));localStorage.setItem(_0x1[9],JSON.stringify(_vS))}
+    
+    function _u(){
+        const s=g(_0x1[10]);s.innerHTML='';if(!_vP.length){s.innerHTML='<p class="text-center text-gray-400 py-4 italic text-sm">No hay atletas registrados</p>';return}
+        let d={};_vP.forEach(p=>d[p.number]={p:0,n:0,a:{}});
+        _vS.forEach(l=>{let k=d[l.playerNumber];if(k){let v=_0xa[l.action],t=l.action.charAt(l.action.length-2);v>0?k.p++:k.n++;if(!k.a[t])k.a[t]={p:0,n:0};v>0?k.a[t].p++:k.a[t].n++}});
+        _vP.forEach(p=>{let k=d[p.number],dt='';Object.keys(k.a).forEach(x=>dt+=`<span class="bg-white px-1 rounded border border-gray-100">${x}: ${k.a[x].p}|${k.a[x].n}</span> `);
+        s.innerHTML+=`<div class="bg-gray-50 p-3 rounded-xl border border-gray-100"><div class="flex justify-between items-center font-bold text-sm mb-1"><span>#${p.number} ${p.name}</span><span class="text-blue-600">DIF: ${k.p-k.n}</span></div><div class="text-[10px] text-gray-400 flex flex-wrap gap-1">${dt}</div></div>`});
+        
+        if(typeof Chart === 'undefined') return;
+        const x1=g(_0x1[11]).getContext('2d'),x2=g(_0x1[12]).getContext('2d'),l=Object.values(_0xo);
+        let v1={p:[],n:[]},v2={p:[],n:[]},tp=0,tn=0;
+        Object.keys(_0xo).forEach(k=>{let p=0,n=0,ap=0,an=0;_vS.forEach(z=>{if(z.action.charAt(z.action.length-2)===k)_0xa[z.action]>0?p++:n++});_vM.forEach(z=>{if(z.action.charAt(z.action.length-2)===k){if(_0xa[z.action]>0){ap++;tp++}else{an++;tn++}}});v1.p.push(p);v1.n.push(n);v2.p.push(ap);v2.n.push(an)});
+        if(_b1)_b1.destroy();_b1=new Chart(x1,{type:'bar',data:{labels:l,datasets:[{label:'+',data:v1.p,backgroundColor:P.b,borderRadius:5},{label:'-',data:v1.n,backgroundColor:P.o,borderRadius:5}]},options:{...K,plugins:{title:{display:1,text:'RENDIMIENTO SET ACTUAL',font:{weight:'bold'}}}}});
+        g(_0x1[13]).innerHTML=`POS: ${tp} | NEG: ${tn} | TOTAL: ${tp+tn}`;
+        if(_b2)_b2.destroy();_b2=new Chart(x2,{type:'bar',data:{labels:l,datasets:[{label:'+',data:v2.p,backgroundColor:P.g,borderRadius:5},{label:'-',data:v2.n,backgroundColor:P.o,borderRadius:5}]},options:{...K,plugins:{title:{display:1,text:'ESTADÍSTICAS DEL PARTIDO',font:{weight:'bold'}}}}})}
+
+    document.addEventListener(_0x1[6],()=>{
+        _vP=JSON.parse(localStorage.getItem(_0x1[7])||'[]');
+        _vM=JSON.parse(localStorage.getItem(_0x1[8])||'[]');
+        _vS=JSON.parse(localStorage.getItem(_0x1[9])||'[]');
+        const ps=g(_0x1[14]),as=g(_0x1[15]);
+        function rP(){ps.innerHTML='<option value="" disabled selected>Selecciona Atleta</option>';_vP.sort((a,b)=>a.number-b.number).forEach(p=>{let o=document.createElement('option');o.value=p.number;o.textContent=`#${p.number} - ${p.name}`;ps.appendChild(o)})}
+        Object.keys(_0xa).forEach(k=>{let o=document.createElement('option');o.value=k;o.textContent=k;as.appendChild(o)});
+        g(_0x1[16]).onclick=()=>{let n=parseInt(g(_0x1[17]).value),m=g(_0x1[18]).value;if(n&&m){_vP.push({number:n,name:m});_s();rP();_u();g(_0x1[17]).value='';g(_0x1[18]).value='';_t('ATLETA AGREGADO')}};
+        g(_0x1[19]).onsubmit=e=>{e.preventDefault();if(ps.value){let l={playerNumber:parseInt(ps.value),action:as.value};_vM.push(l);_vS.push(l);_s();_u();_t('JUGADA REGISTRADA')}};
+        g(_0x1[20]).onclick=()=>{if(confirm('¿Reiniciar puntos del Set?')){_vS=[];_s();_u()}};
+        
+        g(_0x1[21]).onclick=()=>{
+            if(confirm('¿BORRAR TODO EL PARTIDO?\nEsto reiniciará la App.')){
+                localStorage.clear();
+                _t('BORRANDO DATOS...');
+                setTimeout(() => { location.href = "index.html"; }, 1500);
+            }
+        };
+        rP();_u();
+    })
+})();
+
+// Lógica PWA e Instalación
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installArea').classList.remove('hidden');
+});
+document.getElementById('btnInstall').onclick = async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') document.getElementById('installArea').classList.add('hidden');
+        deferredPrompt = null;
+    }
+};
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+    });
+}
 </script>
 </body>
 </html>
