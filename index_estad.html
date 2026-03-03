@@ -10,50 +10,7 @@
     <script src="./libs/tailwind.js"></script>
     <script src="./libs/charts.js"></script>
     <style>
-        :root { --b: #0056FF; }
-        body { 
-            font-family: 'Inter', system-ui, sans-serif; 
-            -webkit-user-select: none; user-select: none; 
-            background: #F3F4F6;
-        }
-        .card { 
-            background: #fff; 
-            border-radius: 1.5rem; 
-            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .toast { 
-            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); 
-            background: #1f2937; color: #fff; padding: 1rem 2rem; 
-            border-radius: 1rem; opacity: 0; transition: opacity 0.3s; 
-            z-index: 9999;
-        }
-        .v { opacity: 1; }
-        .app-input {
-            background: #fff;
-            border: 2px solid #E5E7EB;
-            padding: 0.8rem;
-            border-radius: 1rem;
-            transition: all 0.2s;
-            font-weight: 600;
-        }
-        .app-input:focus { border-color: var(--b); ring: 2px; }
-        .btn-intense { transition: all 0.1s; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
-        .btn-intense:active { transform: scale(0.96); filter: brightness(0.9); }
-        
-        .action-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
-        .btn-action {
-            padding: 0.75rem 0.5rem;
-            border-radius: 0.75rem;
-            font-size: 10px;
-            font-weight: 800;
-            text-align: center;
-            border: 2px solid transparent;
-            text-transform: uppercase;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        .btn-selected { border-color: #000 !important; transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        :root{--b:#0056FF}body{font-family:'Inter',system-ui,sans-serif;-webkit-user-select:none;user-select:none;background:#F3F4F6}.card{background:#fff;border-radius:1.5rem;box-shadow:0 4px 20px -2px rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.05)}.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:1rem 2rem;border-radius:1rem;opacity:0;transition:opacity .3s;z-index:9999}.v{opacity:1}.app-input{background:#fff;border:2px solid #E5E7EB;padding:.8rem;border-radius:1rem;transition:all .2s;font-weight:600}.app-input:focus{border-color:var(--b);outline:0;ring:2px}.btn-intense{transition:all .1s;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.1))}.btn-intense:active{transform:scale(0.96);filter:brightness(0.9)}.action-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}.btn-action{padding:.75rem .5rem;border-radius:.75rem;font-size:11px;font-weight:800;text-align:center;border:2px solid transparent;transition:all .2s;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;line-height:1.2}.btn-pos{background-color:#DBEAFE;color:#1E40AF;border-color:#BFDBFE}.btn-neg{background-color:#FEE2E2;color:#991B1B;border-color:#FECACA}.btn-selected{border-color:#000!important;transform:scale(1.03);box-shadow:0 4px 10px rgba(0,0,0,0.1)}
     </style>
 </head>
 <body class="p-4 pb-12 text-gray-800" oncontextmenu="return false">
@@ -64,7 +21,7 @@
                 <h1 class="text-2xl font-black italic tracking-tighter text-gray-900">CONTROL <span class="text-blue-600">VOLEY</span></h1>
                 <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Estadísticas Pro</p>
             </div>
-            <button onclick="if(confirm('¿Salir?')) window.close()" class="bg-red-600 text-white px-5 py-2 rounded-2xl text-xs font-black shadow-lg">SALIR</button>
+            <button onclick="if(confirm('¿Salir?'))window.close()" class="bg-red-600 text-white px-5 py-2 rounded-2xl text-xs font-black shadow-lg">SALIR</button>
         </header>
 
         <div class="card p-6">
@@ -82,23 +39,12 @@
             <h2 class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Panel de Registro</h2>
             <form id="f" class="space-y-4">
                 <select id="ps" class="w-full app-input text-gray-900 shadow-sm"></select>
-                
-                <div id="actionContainer" class="action-grid">
-                    </div>
-                
+                <div id="actionContainer" class="action-grid"></div>
                 <input type="hidden" id="as">
-
-                <button class="btn-intense w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-blue-200 mt-2">
-                    Registrar Acción
-                </button>
-                
+                <button class="btn-intense w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-blue-200 mt-2">Registrar Acción</button>
                 <div class="grid grid-cols-2 gap-4 mt-2">
-                    <button type="button" id="rs" class="btn-intense bg-amber-500 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-amber-100">
-                        Limpiar Set
-                    </button>
-                    <button type="button" id="ra" class="btn-intense bg-red-600 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-red-100">
-                        Borrar Todo
-                    </button>
+                    <button type="button" id="rs" class="btn-intense bg-amber-500 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-amber-100">Limpiar Set</button>
+                    <button type="button" id="ra" class="btn-intense bg-red-600 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-red-100">Borrar Todo</button>
                 </div>
             </form>
         </div>
@@ -108,10 +54,7 @@
             <div id="st" class="space-y-3 max-h-72 overflow-y-auto"></div>
         </div>
 
-        <div class="card p-4 h-72">
-            <canvas id="c1"></canvas>
-        </div>
-        
+        <div class="card p-4 h-72"><canvas id="c1"></canvas></div>
         <div class="card p-4 h-96">
             <div id="sum" class="text-center mb-4 text-xs font-black text-white bg-blue-600 py-3 rounded-xl shadow-inner uppercase"></div>
             <canvas id="c2"></canvas>
@@ -119,89 +62,7 @@
     </main>
 
 <script>
-(function(){
-    const _0x1=[window,'keydown','keyCode','ctrlKey','shiftKey','preventDefault','DOMContentLoaded','vP','vM','vS','st','c1','c2','sum','ps','as','add','pN','pM','f','rs','ra'];
-    document.addEventListener('keydown',function(e){if(e[_0x1[2]]==123||(e[_0x1[3]]&&e[_0x1[4]]&&(e[_0x1[2]]==73||e[_0x1[2]]==74))||(e[_0x1[3]]&&e[_0x1[2]]==85)){e[_0x1[5]]();return false}});
-    let _vP=[],_vM=[],_vS=[],_b1=null,_b2=null;
-    const g=id=>document.getElementById(id);
-
-    // DICCIONARIO ACTUALIZADO CON LAS NUEVAS ACCIONES POSITIVAS
-    const _0xa={
-        'Servicio Bueno S#':1,
-        'Ataque Bueno A#':1,
-        'Bloqueo Bueno B#':1,
-        'Coloque Bueno C#':1,
-        'Defensa Bueno D#':1,
-        'Recepcion Bueno R#':1,
-        'Servicio Malo S=':-1,
-        'Ataque Malo A=':-1,
-        'Bloqueo Malo B=':-1,
-        'Recepcion Malo R=':-1,
-        'Coloque Malo C=':-1,
-        'Defensa Malo D=':-1
-    };
-
-    const _0xo={S:'Servicio',A:'Ataque',B:'Bloqueo',R:'Recepcion',C:'Coloque',D:'Defensa'};
-    const P={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},K={scales:{y:{ticks:{stepSize:1, font:{weight:'bold'}}}},responsive:1,maintainAspectRatio:0};
-
-    function _t(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.classList.add('v'),10);setTimeout(()=>{t.classList.remove('v');setTimeout(()=>t.remove(),300)},3000)}
-    function _s(){localStorage.setItem(_0x1[7],JSON.stringify(_vP));localStorage.setItem(_0x1[8],JSON.stringify(_vM));localStorage.setItem(_0x1[9],JSON.stringify(_vS))}
-    
-    function _u(){
-        const s=g(_0x1[10]);s.innerHTML='';if(!_vP.length){s.innerHTML='<p class="text-center text-gray-400 py-4 italic">Sin datos</p>';return}
-        let d={};_vP.forEach(p=>d[p.number]={p:0,n:0,a:{}});
-        _vS.forEach(l=>{let k=d[l.playerNumber];if(k){let v=_0xa[l.action],t=l.action.charAt(l.action.length-2);v>0?k.p++:k.n++;if(!k.a[t])k.a[t]={p:0,n:0};v>0?k.a[t].p++:k.a[t].n++}});
-        _vP.forEach(p=>{let k=d[p.number],dt='';Object.keys(k.a).forEach(x=>dt+=`<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">${x}:${k.a[x].p}|${k.a[x].n}</span> `);
-        s.innerHTML+=`<div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 shadow-sm"><div class="flex justify-between items-center font-black text-sm mb-2"><span>#${p.number} ${p.name}</span><span class="text-blue-600 bg-white px-3 py-1 rounded-full shadow-sm">DIF: ${k.p-k.n}</span></div><div class="text-[10px] font-bold flex flex-wrap gap-1">${dt}</div></div>`});
-        
-        if(typeof Chart === 'undefined') return;
-        const x1=g(_0x1[11]).getContext('2d'),x2=g(_0x1[12]).getContext('2d'),l=Object.values(_0xo);
-        let v1={p:[],n:[]},v2={p:[],n:[]},tp=0,tn=0;
-        Object.keys(_0xo).forEach(k=>{let p=0,n=0,ap=0,an=0;_vS.forEach(z=>{if(z.action.charAt(z.action.length-2)===k)_0xa[z.action]>0?p++:n++});_vM.forEach(z=>{if(z.action.charAt(z.action.length-2)===k){if(_0xa[z.action]>0){ap++;tp++}else{an++;tn++}}});v1.p.push(p);v1.n.push(n);v2.p.push(ap);v2.n.push(an)});
-        if(_b1)_b1.destroy();_b1=new Chart(x1,{type:'bar',data:{labels:l,datasets:[{label:'+',data:v1.p,backgroundColor:P.b,borderRadius:8},{label:'-',data:v1.n,backgroundColor:P.o,borderRadius:8}]},options:{...K,plugins:{title:{display:1,text:'SET ACTUAL',font:{weight:'900', size:14}}}}});
-        g(_0x1[13]).innerHTML=`POS: ${tp} | NEG: ${tn} | TOTAL: ${tp+tn}`;
-        if(_b2)_b2.destroy();_b2=new Chart(x2,{type:'bar',data:{labels:l,datasets:[{label:'+',data:v2.p,backgroundColor:P.g,borderRadius:8},{label:'-',data:v2.n,backgroundColor:P.o,borderRadius:8}]},options:{...K,plugins:{title:{display:1,text:'PARTIDO COMPLETO',font:{weight:'900', size:14}}}}})}
-
-    document.addEventListener(_0x1[6],()=>{
-        _vP=JSON.parse(localStorage.getItem(_0x1[7])||'[]'); _vM=JSON.parse(localStorage.getItem(_0x1[8])||'[]'); _vS=JSON.parse(localStorage.getItem(_0x1[9])||'[]');
-        const ps=g(_0x1[14]), as_hidden=g(_0x1[15]), actionContainer = g('actionContainer');
-
-        // Generar botones de acción dinámicamente
-        Object.keys(_0xa).forEach(key => {
-            const btn = document.createElement('div');
-            const isPos = _0xa[key] > 0;
-            btn.textContent = key.split(' ')[0] + ' ' + (isPos ? 'OK' : 'X'); // Texto simplificado para el botón
-            btn.className = `btn-action ${isPos ? 'bg-blue-600 text-white' : 'bg-red-600 text-white'}`;
-            
-            btn.onclick = () => {
-                document.querySelectorAll('.btn-action').forEach(b => b.classList.remove('btn-selected'));
-                btn.classList.add('btn-selected');
-                as_hidden.value = key;
-            };
-            actionContainer.appendChild(btn);
-        });
-
-        function rP(){ps.innerHTML='<option value="" disabled selected>SELECCIONAR ATLETA</option>';_vP.sort((a,b)=>a.number-b.number).forEach(p=>{let o=document.createElement('option');o.value=p.number;o.textContent=`#${p.number} - ${p.name}`;ps.appendChild(o)})}
-        
-        g(_0x1[16]).onclick=()=>{let n=parseInt(g(_0x1[17]).value),m=g(_0x1[18]).value;if(n&&m){_vP.push({number:n,name:m});_s();rP();_u();g(_0x1[17]).value='';g(_0x1[18]).value='';_t('¡ATLETA OK!')}};
-        
-        g(_0x1[19]).onsubmit=e=>{
-            e.preventDefault();
-            if(ps.value && as_hidden.value){
-                let l={playerNumber:parseInt(ps.value),action:as_hidden.value};
-                _vM.push(l);_vS.push(l);_s();_u();_t('REGISTRADO');
-                document.querySelectorAll('.btn-action').forEach(b => b.classList.remove('btn-selected'));
-                as_hidden.value = "";
-            } else {
-                _t('Atleta y Acción son obligatorios');
-            }
-        };
-
-        g(_0x1[20]).onclick=()=>{if(confirm('¿Limpiar puntos del set?')){_vS=[];_s();_u()}};
-        g(_0x1[21]).onclick=()=>{if(confirm('¿BORRAR TODO EL JUEGO?')){localStorage.clear();location.href="index.html"}};
-        rP();_u();
-    })
-})();
-</script>
-</body>
-</html>
+/**
+ * Control Voley - Versión Protegida [2025-12-04]
+ */
+(function(_0x1b4021,_0x38e762){const _0x1a2b=function(_0x4b3c){return _0x4b3c;};document.addEventListener('keydown',function(_0x2e1a2b){if(_0x2e1a2b.keyCode==123||(_0x2e1a2b.ctrlKey&&_0x2e1a2b.shiftKey&&(_0x2e1a2b.keyCode==73||_0x2e1a2b.keyCode==74))||(_0x2e1a2b.ctrlKey&&_0x2e1a2b.keyCode==85)){_0x2e1a2b.preventDefault();return false;}});let _0x2c2d=[],_0x4f4a=[],_0x5d5e=[],_0x3a1b=null,_0x1f2e=null;const _0x98a2=id=>document.getElementById(id);const _0xbc42={'Servicio Bueno S#':1,'Ataque Bueno A#':1,'Bloqueo Bueno B#':1,'Coloque Bueno C#':1,'Defensa Bueno D#':1,'Recepcion Bueno R#':1,'Servicio Malo S=':-1,'Ataque Malo A=':-1,'Bloqueo Malo B=':-1,'Recepcion Malo R=':-1,'Coloque Malo C=':-1,'Defensa Malo D=':-1};const _0xde21={S:'Servicio',A:'Ataque',B:'Bloqueo',R:'Recepcion',C:'Coloque',D:'Defensa'};const _0xfe22={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},_0xce33={scales:{y:{ticks:{stepSize:1,font:{weight:'bold'}}}},responsive:true,maintainAspectRatio:false};function _0x6e22(_0x4e22){const _0x2a1b=document.createElement('div');_0x2a1b.className='toast';_0x2a1b.textContent=_0x4e22;document.body.appendChild(_0x2a1b);setTimeout(()=>_0x2a1b.classList.add('v'),10);setTimeout(()=>{_0x2a1b.classList.remove('v');setTimeout(()=>_0x2a1b.remove(),300);},3000);}function _0x7s22(){localStorage.setItem('vP',JSON.stringify(_0x2c2d));localStorage.setItem('vM',JSON.stringify(_0x4f4a));localStorage.setItem('vS',JSON.stringify(_0x5d5e));}function _0x8u22(){const _0x1122=_0x98a2('st');_0x1122.innerHTML='';if(!_0x2c2d.length){_0x1122.innerHTML='<p class="text-center text-gray-400 py-4 italic">Sin datos</p>';return;}let _0xd1a2={};_0x2c2d.forEach(_0x2211=>{_0xd1a2[_0x2211.number]={p:0,n:0,a:{}};});_0x5d5e.forEach(_0x3322=>{let _0x4422=_0xd1a2[_0x3322.playerNumber];if(_0x4422){let _0x5522=_0xbc42[_0x3322.action],_0x6622=_0x3322.action.charAt(_0x3322.action.length-2);_0x5522>0?_0x4422.p++:_0x4422.n++;if(!_0x4422.a[_0x6622])_0x4422.a[_0x6622]={p:0,n:0};_0x5522>0?_0x4422.a[_0x6622].p++:_0x4422.a[_0x6622].n++;}});_0x2c2d.forEach(_0x7722=>{let _0x8822=_0xd1a2[_0x7722.number],_0x9922='';Object.keys(_0x8822.a).forEach(_0xaa11=>{_0x9922+=`<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">${_0xaa11}:${_0x8822.a[_0xaa11].p}|${_0x8822.a[_0xaa11].n}</span> `;});_0x1122.innerHTML+=`<div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 shadow-sm"><div class="flex justify-between items-center font-black text-sm mb-2"><span>#${_0x7722.number} ${_0x7722.name}</span><span class="text-blue-600 bg-white px-3 py-1 rounded-full shadow-sm">DIF: ${_0x8822.p-_0x8822.n}</span></div><div class="text-[10px] font-bold flex flex-wrap gap-1">${_0x9922}</div></div>`;});if(typeof Chart==='undefined')return;const _0xbb22=_0x98a2('c1').getContext('2d'),_0xcc22=_0x98a2('c2').getContext('2d'),_0xdd22=Object.values(_0xde21);let _0xee22={p:[],n:[]},_0xff11={p:[],n:[]},_0x1a1a=0,_0x2b2b=0;Object.keys(_0xde21).forEach(_0x3c3c=>{let _0x4d4d=0,_0x5e5e=0,_0x6f6f=0,_0x7a7a=0;_0x5d5e.forEach(_0x8b8b=>{if(_0x8b8b.action.charAt(_0x8b8b.action.length-2)===_0x3c3c)_0xbc42[_0x8b8b.action]>0?_0x4d4d++:_0x5e5e++;});_0x4f4a.forEach(_0x9c9c=>{if(_0x9c9c.action.charAt(_0x9c9c.action.length-2)===_0x3c3c){if(_0xbc42[_0x9c9c.action]>0){_0x6f6f++;_0x1a1a++;}else{_0x7a7a++;_0x2b2b++;}}});_0xee22.p.push(_0x4d4d);_0xee22.n.push(_0x5e5e);_0xff11.p.push(_0x6f6f);_0xff11.n.push(_0x7a7a);});if(_0x3a1b)_0x3a1b.destroy();_0x3a1b=new Chart(_0xbb22,{type:'bar',data:{labels:_0xdd22,datasets:[{label:'+',data:_0xee22.p,backgroundColor:_0xfe22.b,borderRadius:8},{label:'-',data:_0xee22.n,backgroundColor:_0xfe22.o,borderRadius:8}]},options:{..._0xce33,plugins:{title:{display:true,text:'SET ACTUAL',font:{weight:'900',size:14}}}}});_0x98a2('sum').innerHTML=`POS: ${_0x1a1a} | NEG: ${_0x2b2b} | TOTAL: ${_0x1a1a+_0x2b2b}`;if(_0x1f2e)_0x1f2e.destroy();_0x1f2e=new Chart(_0xcc22,{type:'bar',data:{labels:_0xdd22,datasets:[{label:'+',data:_0xff11.p,backgroundColor:_0xfe22.g,borderRadius:8},{label:'-',data:_0xff11.n,backgroundColor:_0xfe22.o,borderRadius:8}]},options:{..._0xce33,plugins:{title:{display:true,text:'PARTIDO COMPLETO',font:{weight:'900',size:14}}}}});}document.addEventListener('DOMContentLoaded',()=>{_0x2c2d=JSON.parse(localStorage.getItem('vP')||'[]');_0x4f4a=JSON.parse(localStorage.getItem('vM')||'[]');_0x5d5e=JSON.parse(localStorage.getItem('vS')||'[]');const _0x1a2b=_0x98a2('ps'),_0x2c2c=_0x98a2('as'),_0x3d3d=_0x98a2('actionContainer');Object.keys(_0xbc42).forEach(_0x4e4e=>{const _0x5f5f=document.createElement('div');const _0x6a6a=_0xbc42[_0x4e4e]>0;const _0x7b7b=_0x4e4e.split(' ');_0x5f5f.innerHTML=`<span>${_0x7b7b[0]}</span><span class="text-lg">${_0x7b7b[2]}</span>`;_0x5f5f.className=`btn-action ${_0x6a6a?'btn-pos':'btn-neg'}`;_0x5f5f.onclick=()=>{document.querySelectorAll('.btn-action').forEach(_0x8c8c=>_0x8c8c.classList.remove('btn-selected'));_0x5f5f.classList.add('btn-selected');_0x2c2c.value=_0x4e4e;};_0x3d3d.appendChild(_0x5f5f);});function _0x8d8d(){_0x1a2b.innerHTML='<option value="" disabled selected>SELECCIONAR ATLETA</option>';_0x2c2d.sort((_0x9a9a,_0xab11)=>_0x9a9a.number-_0xab11.number).forEach(_0xbc22=>{let _0xcd33=document.
