@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voley Stats - Menú</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body{background:#004080;font-family:'Inter',sans-serif;color:white;min-height:100vh}
+        .app-bg{background:radial-gradient(circle at top,#0056FF 0%,#004080 100%)}
+        .card{background-color:#fff;color:#1f2937;border-radius:1.5rem;box-shadow:0 10px 25px -5px rgba(0,0,0,0.4)}
+    </style>
+</head>
+<body class="app-bg flex flex-col items-center justify-center p-6">
+    <main class="w-full max-w-md text-center">
+        <header class="mb-10">
+            <h1 class="text-3xl font-black italic uppercase">PANEL <span class="text-yellow-400">CONTROL</span></h1>
+            <p id="uidDisplay" class="text-[10px] text-blue-200 mt-2 font-mono opacity-70">Identificando...</p>
+        </header>
+
+        <div class="space-y-4">
+            <a href="index_estad.html" class="flex items-center justify-center w-full bg-white text-blue-700 font-black py-6 rounded-2xl shadow-xl text-xl uppercase tracking-tighter">
+                Entrar a Estadísticas
+            </a>
+            
+            <button id="btnLogout" class="text-blue-300 text-xs font-bold uppercase tracking-[0.2em] opacity-80 hover:opacity-100 transition-opacity mt-8">
+                Cerrar Sesión Pro
+            </button>
+        </div>
+    </main>
+
+    <footer class="absolute bottom-6 text-center w-full">
+        <p class="text-[9px] text-blue-400 opacity-70">Programación y Desarrollo: Sistematikos - Frank Hernandez</p>
+    </footer>
+
+    <script type="module">
+        import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        const fc={apiKey:"AIzaSyB5RB7mm1j-0gjCNTUEJTkyEqLjyZ3C7ws",authDomain:"datacontrolvoley-ff556.firebaseapp.com",projectId:"datacontrolvoley-ff556",storageBucket:"datacontrolvoley-ff556.firebasestorage.app",messagingSenderId:"516409072606",appId:"1:516409072606:web:132538dba358a077d71b4f"};
+        const a=initializeApp(fc),b=getAuth(a);
+
+        onAuthStateChanged(b,u=>{
+            if(!u) window.location.href='index.html';
+            else document.getElementById('uidDisplay').textContent=`UID: ${u.uid}`;
+        });
+
+        document.getElementById('btnLogout').onclick=async()=>{
+            await signOut(b);
+            window.location.href='index.html';
+        };
+    </script>
+</body>
+</html>
