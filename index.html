@@ -3,32 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Voley Stats - Acceso</title>
+    <title>Voley Stats - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body{background:#004080;font-family:'Inter',sans-serif;color:white;min-height:100vh;user-select:none}
-        .app-bg{background:radial-gradient(circle at top,#0056FF 0%,#004080 100%)}
-        .card{background-color:#fff;color:#1f2937;border-radius:1.5rem;box-shadow:0 10px 25px -5px rgba(0,0,0,0.4)}
-        .hidden{display:none}
+        body{background:#111827;font-family:'Inter',sans-serif;color:white;min-height:100vh;display:flex;align-items:center;justify-content:center;p:1.5rem}
+        .card{background:#1f2937;padding:2.5rem;border-radius:2rem;width:100%;max-width:400px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5)}
+        input{background:#374151!important;border:1px solid #4b5563!important;color:white!important}
     </style>
 </head>
-<body class="app-bg flex flex-col items-center justify-center p-6">
-    <header class="flex flex-col items-center mb-8">
-        <div class="bg-white p-5 rounded-[2.5rem] shadow-2xl mb-4"><img src="./img/logo.png" class="w-20 h-20"></div>
-        <h1 class="text-3xl font-black italic tracking-tighter uppercase">VOLEY <span class="text-yellow-400">STATS</span></h1>
-    </header>
-
-    <main class="w-full max-w-md">
-        <div id="loginSection" class="card p-8">
-            <h2 class="text-xl font-black text-center mb-6 text-blue-700 uppercase">Iniciar Sesión</h2>
-            <form id="loginForm" class="space-y-4">
-                <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl border border-gray-300" placeholder="Email">
-                <input type="password" id="password" required class="w-full px-4 py-3 rounded-xl border border-gray-300" placeholder="Contraseña">
-                <button type="submit" id="bn" class="w-full bg-blue-600 text-white font-black py-4 rounded-xl uppercase tracking-widest">Autenticar</button>
-                <p id="er" class="text-center text-red-500 text-xs font-bold mt-4 hidden"></p>
-            </form>
+<body>
+    <div class="card">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-black uppercase italic italic">Control <span class="text-blue-500">Voley</span></h1>
+            <p class="text-gray-400 text-xs font-bold tracking-widest mt-2">SISTEMA DE AUTENTICACIÓN</p>
         </div>
-    </main>
+        <form id="lF" class="space-y-4">
+            <input type="email" id="e" placeholder="Correo Electrónico" class="w-full p-4 rounded-xl outline-none" required>
+            <input type="password" id="p" placeholder="Contraseña" class="w-full p-4 rounded-xl outline-none" required>
+            <button type="submit" id="b" class="w-full bg-blue-600 hover:bg-blue-700 py-4 rounded-xl font-black uppercase tracking-widest transition-all">Ingresar</button>
+            <p id="err" class="text-red-500 text-center text-xs font-bold hidden">DATOS INCORRECTOS</p>
+        </form>
+    </div>
 
     <script type="module">
         import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -38,16 +33,15 @@
 
         onAuthStateChanged(b,u=>{ if(u) window.location.href='index_menu.html'; });
 
-        document.getElementById('loginForm').onsubmit=async(e)=>{
+        document.getElementById('lF').onsubmit=async(e)=>{
             e.preventDefault();
-            const btn=document.getElementById('bn'), err=document.getElementById('er');
-            btn.disabled=true; btn.textContent="VERIFICANDO...";
+            const btn=document.getElementById('b'),er=document.getElementById('err');
+            btn.disabled=true; btn.textContent="VALIDANDO...";
             try{
-                await signInWithEmailAndPassword(b,document.getElementById('email').value,document.getElementById('password').value);
+                await signInWithEmailAndPassword(b,document.getElementById('e').value,document.getElementById('p').value);
                 window.location.href='index_menu.html';
             }catch(x){
-                err.textContent="ACCESO DENEGADO"; err.classList.remove('hidden');
-                btn.disabled=false; btn.textContent="AUTENTICAR";
+                er.classList.remove('hidden'); btn.disabled=false; btn.textContent="INGRESAR";
             }
         };
     </script>
