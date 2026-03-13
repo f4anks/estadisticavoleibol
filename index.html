@@ -1,162 +1,45 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    
-    <link rel="manifest" href="./manifest.json">
-    <link rel="icon" type="image/png" href="./img/logo.png">
-    <link rel="apple-touch-icon" href="./img/logo.png">
-    
-    <title>Control Voley - Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
-        /* Fondo y centrado absoluto */
-        body { 
-            background: #111827; 
-            font-family: 'Inter', system-ui, sans-serif; 
-            color: white; 
-            min-height: 100vh; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; /* Centra verticalmente todo el contenido */
-            padding: 20px;
-            margin: 0;
-            user-select: none;
-        }
-
-        /* Contenedor principal para asegurar alineación central */
-        .auth-container {
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Centra logo y login horizontalmente */
-            text-align: center;
-        }
-
-        .card { 
-            background: #1f2937; 
-            border-radius: 2.5rem; 
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
-            border: 1px solid rgba(255,255,255,0.05); 
-            width: 100%; 
-            padding: 2rem;
-            margin-top: 1.5rem; /* Espacio exacto bajo el nombre */
-        }
-
-        input { 
-            background: #374151 !important; 
-            border: 1px solid #4b5563 !important; 
-            color: white !important; 
-            width: 100%;
-            border-radius: 1rem;
-            padding: 1rem 1.25rem;
-            outline: none;
-        }
-
-        input:focus { border-color: #3b82f6 !important; box-shadow: 0 0 0 3px rgba(59,130,246,0.3); }
-
-        .install-banner { 
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); 
-            position: fixed; /* Lo sacamos del flujo para que no mueva el login */
-            top: 20px;
-            z-index: 50;
-        }
-
-        .hidden { display: none !important; }
-    </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
+<link rel="manifest" href="./manifest.json"><link rel="icon" type="image/png" href="./img/logo.png"><link rel="apple-touch-icon" href="./img/logo.png">
+<title>Control Voley</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{background:#111827;font-family:system-ui,-apple-system,sans-serif;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;margin:0;-webkit-user-select:none;user-select:none}
+.auth-container{width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.card{background:#1f2937;border-radius:2.5rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.05);width:100%;padding:2rem;margin-top:1.5rem}
+input{background:#374151!important;border:1px solid #4b5563!important;color:#fff!important;width:100%;border-radius:1rem;padding:1rem 1.25rem;outline:0;transition:all .2s}
+input:focus{border-color:#3b82f6!important;box-shadow:0 0 0 3px rgba(59,130,246,.3)}
+.install-banner{background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);position:fixed;top:20px;z-index:50;border:1px solid rgba(255,255,255,.2)}
+.hidden{display:none!important}
+</style>
 </head>
-<body>
-
-    <div id="iB" class="hidden install-banner w-full max-w-md p-4 rounded-3xl flex items-center justify-between animate-bounce">
-        <div class="flex items-center gap-3">
-            <img src="./img/logo.png" class="w-10 h-10 bg-white p-1 rounded-xl shadow-lg">
-            <div class="text-left">
-                <p class="text-xs font-black">Instalar App</p>
-                <p class="text-[9px] uppercase font-bold opacity-80">Uso Offline Listo</p>
-            </div>
-        </div>
-        <button id="iBtn" class="bg-white text-blue-700 px-4 py-2 rounded-xl text-[10px] font-black uppercase shadow-lg">Obtener</button>
-    </div>
-
-    <div class="auth-container">
-        <header class="mb-2">
-            <img src="./img/logo.png" alt="Logo" class="w-24 h-24 mb-4 drop-shadow-2xl inline-block">
-            <h1 class="text-3xl font-black italic tracking-tighter uppercase leading-none">
-                CONTROL <span class="text-blue-500">VOLEY</span>
-            </h1>
-            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.4em] mt-2">Versión Pro 2026</p>
-        </header>
-
-        <main class="card">
-            <form id="lF" class="space-y-4">
-                <div class="text-left">
-                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2 ml-1">Email</label>
-                    <input type="email" id="e" required placeholder="usuario@voley.com">
-                </div>
-                <div class="text-left">
-                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2 ml-1">Contraseña</label>
-                    <input type="password" id="p" required placeholder="••••••••">
-                </div>
-                
-                <button type="submit" id="b" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl shadow-xl transition-all uppercase tracking-widest mt-2 active:scale-95">
-                    Autenticar
-                </button>
-                
-                <p id="err" class="text-center text-red-500 text-[10px] font-black mt-4 hidden uppercase tracking-widest bg-red-500/10 py-2 rounded-lg border border-red-500/20">Acceso Denegado</p>
-            </form>
-        </main>
-
-        <footer class="mt-8 opacity-30">
-            <p class="text-[9px] font-bold uppercase tracking-[0.2em]">Sistematikos - Frank Hernandez</p>
-        </footer>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        
-        const fc = {
-            apiKey: "AIzaSyB5RB7mm1j-0gjCNTUEJTkyEqLjyZ3C7ws",
-            authDomain: "datacontrolvoley-ff556.firebaseapp.com",
-            projectId: "datacontrolvoley-ff556",
-            storageBucket: "datacontrolvoley-ff556.firebasestorage.app",
-            messagingSenderId: "516409072606",
-            appId: "1:516409072606:web:132538dba358a077d71b4f"
-        };
-        const a = initializeApp(fc), b = getAuth(a);
-
-        onAuthStateChanged(b, u => { if(u) window.location.href='index_menu.html'; });
-
-        document.getElementById('lF').onsubmit = async (ev) => {
-            ev.preventDefault();
-            const btn = document.getElementById('b'), er = document.getElementById('err');
-            btn.disabled = true; btn.textContent = "VERIFICANDO...";
-            try {
-                await signInWithEmailAndPassword(b, document.getElementById('e').value, document.getElementById('p').value);
-                window.location.href = 'index_menu.html';
-            } catch (x) {
-                er.classList.remove('hidden'); btn.disabled = false; btn.textContent = "AUTENTICAR";
-            }
-        };
-
-        let dP;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); dP = e;
-            document.getElementById('iB').classList.remove('hidden');
-        });
-        document.getElementById('iBtn').onclick = async () => {
-            if (dP) {
-                dP.prompt();
-                const { outcome } = await dP.userChoice;
-                if (outcome === 'accepted') document.getElementById('iB').classList.add('hidden');
-                dP = null;
-            }
-        };
-    </script>
+<body oncontextmenu="return false">
+<div id="iB" class="hidden install-banner w-full max-w-md p-4 rounded-3xl flex items-center justify-between animate-bounce">
+<div class="flex items-center gap-3"><img src="./img/logo.png" class="w-10 h-10 bg-white p-1 rounded-xl shadow-lg">
+<div class="text-left"><p class="text-xs font-black">Instalar App</p><p class="text-[9px] uppercase font-bold opacity-80">Uso Offline Listo</p></div></div>
+<button id="iBtn" class="bg-white text-blue-700 px-4 py-2 rounded-xl text-[10px] font-black uppercase shadow-lg">Obtener</button></div>
+<div class="auth-container"><header class="mb-2"><img src="./img/logo.png" class="w-24 h-24 mb-4 drop-shadow-2xl inline-block">
+<h1 class="text-3xl font-black italic tracking-tighter uppercase leading-none">CONTROL <span class="text-blue-500">VOLEY</span></h1>
+<p class="text-[10px] font-bold text-gray-500 uppercase tracking-[.4em] mt-2">Versión Pro 2026</p></header>
+<main class="card"><form id="lF" class="space-y-4">
+<div class="text-left"><label class="block text-[10px] font-bold text-gray-500 uppercase mb-2 ml-1">Email</label><input type="email" id="e" required placeholder="usuario@voley.com"></div>
+<div class="text-left"><label class="block text-[10px] font-bold text-gray-500 uppercase mb-2 ml-1">Contraseña</label><input type="password" id="p" required placeholder="••••••••"></div>
+<button type="submit" id="b" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl shadow-xl transition-all uppercase tracking-widest mt-2 active:scale-95">Autenticar</button>
+<p id="err" class="text-center text-red-500 text-[10px] font-black mt-4 hidden uppercase tracking-widest bg-red-500/10 py-2 rounded-lg border border-red-500/20">Acceso Denegado</p></form></main>
+<footer class="mt-8 opacity-30"><p class="text-[9px] font-bold uppercase tracking-[.2em]">Sistematikos - Frank Hernandez</p></footer></div>
+<script type="module">
+import{initializeApp as _0x1}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import{getAuth as _0x2,signInWithEmailAndPassword as _0x3,onAuthStateChanged as _0x4}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+const _0x5={apiKey:"AIzaSyB5RB7mm1j-0gjCNTUEJTkyEqLjyZ3C7ws",authDomain:"datacontrolvoley-ff556.firebaseapp.com",projectId:"datacontrolvoley-ff556",storageBucket:"datacontrolvoley-ff556.firebasestorage.app",messagingSenderId:"516409072606",appId:"1:516409072606:web:132538dba358a077d71b4f"};
+const _0x6=_0x1(_0x5),_0x7=_0x2(_0x6);_0x4(_0x7,_0x8=>{if(_0x8)window.location.href='index_menu.html'});
+document.getElementById('lF').onsubmit=async _0x9=>{_0x9.preventDefault();const _0xa=document.getElementById('b'),_0xb=document.getElementById('err');_0xa.disabled=true;_0xa.textContent="VERIFICANDO...";try{await _0x3(_0x7,document.getElementById('e').value,document.getElementById('p').value);window.location.href='index_menu.html'}catch(_0xc){_0xb.classList.remove('hidden');_0xa.disabled=false;_0xa.textContent="AUTENTICAR"}};
+let _0xd;const _0xe=document.getElementById('iB');window.addEventListener('beforeinstallprompt',_0xf=>{_0xf.preventDefault();_0xd=_0xf;setTimeout(()=>{_0xe.classList.remove('hidden')},1000)});
+document.getElementById('iBtn').onclick=async()=>{if(_0xd){_0xd.prompt();const{outcome:_0x10}=await _0xd.userChoice;if(_0x10==='accepted')_0xe.classList.add('hidden');_0xd=null}};
+if('serviceWorker'in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').then(_0x11=>{_0x11.onupdatefound=()=>{const _0x12=_0x11.installing;_0x12.onstatechange=()=>{if(_0x12.state==='installed'&&navigator.serviceWorker.controller)window.location.reload()}}})})}
+document.addEventListener('keydown',_0x13=>{if(_0x13.keyCode==123||(_0x13.ctrlKey&&_0x13.shiftKey&&(_0x13.keyCode==73||_0x13.keyCode==74))||(_0x13.ctrlKey&&_0x13.keyCode==85)){_0x13.preventDefault();return false}});
+</script>
 </body>
 </html>
