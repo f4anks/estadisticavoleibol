@@ -2,59 +2,88 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control Voley - Menú</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Control Voley - Menú Principal</title>
     <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" href="./img/logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body{background:#111827;font-family:'Inter',sans-serif;color:white;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
-        .btn-main{background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);box-shadow:0 10px 25px -5px rgba(37,99,235,0.4)}
-        .install-banner{background:rgba(37,99,235,0.9);backdrop-filter:blur(10px)}
+        body{background:#111827;font-family:'Inter',sans-serif;color:white;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;user-select:none}
+        .btn-entry{background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);box-shadow:0 15px 30px -10px rgba(37,99,235,0.5)}
+        .card-session{background:rgba(31,41,55,0.5);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.05);border-radius:2.5rem}
+        .install-banner{background:rgba(37,99,235,0.9);backdrop-filter:blur(8px)}
     </style>
 </head>
 <body>
-    <div id="iB" class="hidden install-banner w-full max-w-md p-4 rounded-3xl flex items-center justify-between mb-12 animate-pulse border border-blue-400/30">
+
+    <div id="iB" class="hidden install-banner w-full max-w-md p-4 rounded-3xl flex items-center justify-between mb-10 animate-pulse border border-blue-400/20">
         <div class="flex items-center gap-3">
-            <img src="./img/logo.png" class="w-12 h-12 rounded-xl bg-white p-1">
-            <div><p class="text-sm font-black">Instalar App</p><p class="text-[10px] opacity-80 uppercase">Modo offline disponible</p></div>
+            <img src="./img/logo.png" class="w-12 h-12 rounded-xl bg-white p-1 shadow-lg">
+            <div><p class="text-sm font-black">Instalar Aplicación</p><p class="text-[10px] opacity-80 uppercase font-bold tracking-tighter">Acceso directo y Offline</p></div>
         </div>
-        <button id="iBtn" class="bg-white text-blue-700 px-6 py-2 rounded-xl text-xs font-black uppercase">Obtener</button>
+        <button id="iBtn" class="bg-white text-blue-700 px-5 py-2 rounded-xl text-xs font-black uppercase shadow-md active:scale-90 transition-transform">Obtener</button>
     </div>
 
-    <div class="flex flex-col items-center max-w-sm w-full">
-        <img src="./img/logo.png" class="w-32 h-32 mb-6 drop-shadow-2xl">
-        <h1 class="text-4xl font-black italic tracking-tighter uppercase mb-2">CONTROL <span class="text-blue-500">VOLEY</span></h1>
-        <p class="text-gray-400 text-center text-xs font-medium mb-12 px-8">Lleva el control de tus juegos y analiza tus estadísticas sin conexión.</p>
+    <div class="flex flex-col items-center max-w-sm w-full card-session p-10">
+        <img src="./img/logo.png" class="w-32 h-32 mb-8 drop-shadow-[0_20px_20px_rgba(0,0,0,0.5)]">
         
-        <button onclick="window.location.href='index_estad.html'" class="btn-main w-full py-6 rounded-[2rem] text-xl font-black uppercase tracking-widest flex items-center justify-center gap-3 active:scale-95 transition-all">
-            📊 ESTADÍSTICAS
+        <h1 class="text-3xl font-black italic tracking-tighter uppercase mb-2">CONTROL <span class="text-blue-500">VOLEY</span></h1>
+        
+        <div class="bg-black/30 px-4 py-2 rounded-full border border-white/5 mb-10">
+            <p id="uD" class="text-[10px] font-mono text-blue-400 uppercase tracking-widest text-center">Identificando...</p>
+        </div>
+        
+        <button onclick="window.location.href='index_estad.html'" class="btn-entry w-full py-6 rounded-[2rem] text-xl font-black uppercase tracking-widest flex items-center justify-center gap-3 active:scale-95 transition-all shadow-2xl">
+            Ingresar al Sistema
         </button>
 
-        <button id="loBtn" class="mt-12 text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] hover:text-white transition-colors">
+        <button id="loBtn" class="mt-12 text-gray-500 text-[11px] font-black uppercase tracking-[0.4em] hover:text-red-400 transition-colors active:scale-95">
             Cerrar Sesión Pro
         </button>
-        <p class="mt-4 text-[9px] text-gray-600 font-bold uppercase tracking-widest">VERSIÓN PRO 2026</p>
     </div>
+
+    <footer class="mt-12 text-center">
+        <p class="text-[9px] text-gray-600 font-bold uppercase tracking-[0.2em]">Versión Pro 2026 | Sistematikos</p>
+    </footer>
 
     <script type="module">
         import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import{getAuth,signOut,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
         const fc={apiKey:"AIzaSyB5RB7mm1j-0gjCNTUEJTkyEqLjyZ3C7ws",authDomain:"datacontrolvoley-ff556.firebaseapp.com",projectId:"datacontrolvoley-ff556",storageBucket:"datacontrolvoley-ff556.firebasestorage.app",messagingSenderId:"516409072606",appId:"1:516409072606:web:132538dba358a077d71b4f"};
         const a=initializeApp(fc),b=getAuth(a);
 
-        // Seguridad: Si no hay sesión, manda al login
-        onAuthStateChanged(b,u=>{ if(!u) window.location.href='index.html'; });
+        // Verificación de Sesión y muestra de UID
+        onAuthStateChanged(b,u=>{
+            if(!u) {
+                window.location.href='index.html';
+            } else {
+                document.getElementById('uD').textContent=`UID: ${u.uid.substring(0,18)}...`;
+            }
+        });
 
-        // Cerrar sesión
+        // Lógica de Cerrar Sesión
         document.getElementById('loBtn').onclick=async()=>{
-            await signOut(b);
-            window.location.href='index.html';
+            if(confirm("¿Deseas cerrar la sesión actual?")){
+                await signOut(b);
+                window.location.href='index.html';
+            }
         };
 
-        // PWA Install
+        // Lógica de Instalación PWA
         let dP;
-        window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dP=e;document.getElementById('iB').classList.remove('hidden')});
-        document.getElementById('iBtn').onclick=async()=>{if(dP){dP.prompt();const{outcome}=await dP.userChoice;if(outcome==='accepted')document.getElementById('iB').classList.add('hidden');dP=null}};
+        window.addEventListener('beforeinstallprompt',e=>{
+            e.preventDefault(); dP=e;
+            document.getElementById('iB').classList.remove('hidden');
+        });
+        document.getElementById('iBtn').onclick=async()=>{
+            if(dP){
+                dP.prompt();
+                const{outcome}=await dP.userChoice;
+                if(outcome==='accepted')document.getElementById('iB').classList.add('hidden');
+                dP=null;
+            }
+        };
     </script>
 </body>
 </html>
