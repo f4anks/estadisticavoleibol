@@ -67,7 +67,7 @@
 
     <main class="w-full max-w-md">
         
-        <div id="loginSection" class="card p-8">
+        <div id="loginSection" class="card p-8 transition-all duration-500">
             <h2 class="text-2xl font-black text-center mb-6 text-blue-700 uppercase tracking-tight">Acceso Pro</h2>
             <form id="loginForm" class="space-y-4">
                 <div>
@@ -85,9 +85,9 @@
             </form>
         </div>
 
-        <div id="accessSection" class="hidden flex flex-col items-center w-full">
+        <div id="accessSection" class="hidden flex flex-col items-center w-full transition-all duration-500">
             <p id="uidDisplay" class="text-[10px] text-blue-100 mb-3 font-mono font-bold tracking-wider opacity-90 bg-blue-900/40 px-4 py-1.5 rounded-full border border-blue-400/30">
-                Cargando ID...
+                Identificando...
             </p>
             
             <a href="index_estad.html" class="active-btn card flex items-center justify-center gap-4 w-full py-6 font-black text-blue-600 text-xl uppercase tracking-tighter border-2 border-blue-200">
@@ -132,10 +132,12 @@
         // --- OBSERVAR ESTADO DE LA SESIÓN ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                // Si el usuario está logueado, mostramos el panel de opciones
                 uidDisplay.textContent = `UID: ${user.uid}`;
                 loginSection.classList.add('hidden');
                 accessSection.classList.remove('hidden');
             } else {
+                // Si no hay sesión, mostramos el formulario de login
                 loginSection.classList.remove('hidden');
                 accessSection.classList.add('hidden');
                 uidDisplay.textContent = "";
@@ -147,19 +149,19 @@
             e.preventDefault();
             errDisplay.classList.add('hidden');
             btnLogin.disabled = true;
-            btnLogin.textContent = "AUTENTICANDO...";
+            btnLogin.textContent = "VERIFICANDO...";
 
             const email = document.getElementById('email').value;
             const pass = document.getElementById('password').value;
 
             try {
+                // Intentamos la autenticación
                 await signInWithEmailAndPassword(auth, email, pass);
-                // La redirección ocurre por el observer o puedes forzarla:
-                window.location.href = "index_estad.html";
+                // NOTA: Al ser exitoso, onAuthStateChanged detectará el cambio
+                // y mostrará el panel de 'Entrar al Sistema' automáticamente.
             } catch (error) {
                 errDisplay.textContent = "ERROR: CREDENCIALES INVÁLIDAS";
                 errDisplay.classList.remove('hidden');
-            } finally {
                 btnLogin.disabled = false;
                 btnLogin.textContent = "INICIAR SESIÓN";
             }
@@ -192,9 +194,6 @@
 
         // --- SEGURIDAD SISTEMATIKOS ---
         document.addEventListener("contextmenu", e => e.preventDefault());
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) e.preventDefault();
-        });
     </script>
 </body>
 </html>
