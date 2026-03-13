@@ -21,12 +21,12 @@
                 <h1 class="text-2xl font-black italic tracking-tighter text-gray-900 uppercase">VOLEY <span class="text-blue-600">STATS</span></h1>
                 <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Estadísticas Pro</p>
             </div>
-            <button onclick="window.location.href='index.html'" class="bg-red-600 text-white px-5 py-2 rounded-2xl text-xs font-black shadow-lg uppercase tracking-wider active-btn">Salir</button>
+            <button onclick="window.location.href='index_menu.html'" class="bg-red-600 text-white px-5 py-2 rounded-2xl text-xs font-black shadow-lg uppercase tracking-wider">Salir</button>
         </header>
 
         <div class="card p-6">
             <h2 class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 flex items-center gap-2">
-                <span class="w-2 h-2 bg-blue-600 rounded-full"></span> Nuevo Atleta
+                <span class="w-2 h-2 bg-blue-600 rounded-full"></span> Registro de Atleta
             </h2>
             <div class="flex gap-2">
                 <input id="pN" placeholder="N°" class="w-16 app-input text-center" type="number">
@@ -36,9 +36,9 @@
         </div>
 
         <div class="card p-6 border-t-4 border-blue-600">
-            <h2 class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Panel de Registro</h2>
+            <h2 class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Toma de Datos</h2>
             <form id="f" class="space-y-4">
-                <select id="ps" class="w-full app-input text-gray-900 shadow-sm font-bold"></select>
+                <select id="ps" class="w-full app-input text-gray-900 shadow-sm font-bold uppercase"></select>
                 <div id="actionContainer" class="action-grid"></div>
                 <input type="hidden" id="as">
                 <button class="btn-intense w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-blue-200 mt-2">Registrar Acción</button>
@@ -50,7 +50,7 @@
         </div>
 
         <div class="card p-6">
-            <h2 class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Resumen por Jugador</h2>
+            <h2 class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Resumen de Efectividad</h2>
             <div id="st" class="space-y-3 max-h-72 overflow-y-auto"></div>
         </div>
 
@@ -70,7 +70,7 @@
     const _0x4d2e=['keydown','keyCode','ctrlKey','shiftKey','preventDefault','DOMContentLoaded','vP','vM','vS','st','c1','c2','sum','ps','as','add','pN','pM','f','rs','ra'];
     const _0x1a9b=(id)=>document.getElementById(id);
 
-    // Protección de código Sistematikos
+    // Protección de código Sistematikos (Mouse y Teclas)
     document.addEventListener(_0x4d2e[0],function(_0xe){
         if(_0xe[_0x4d2e[1]]==123||(_0xe[_0x4d2e[2]]&&_0xe[_0x4d2e[3]]&&(_0xe[_0x4d2e[1]]==73||_0xe[_0x4d2e[1]]==74))||(_0xe[_0x4d2e[2]]&&_0xe[_0x4d2e[1]]==85)){_0xe[_0x4d2e[4]]();return false}
     });
@@ -168,7 +168,7 @@
         };
 
         _0x1a9b(_0x4d2e[19]).onclick=()=>{if(confirm('¿Limpiar puntos del set?')){_0x99k=[];_0xsv();_0xrd()}};
-        _0x1a9b(_0x4d2e[20]).onclick=()=>{if(confirm('¿BORRAR TODO EL JUEGO?')){localStorage.clear();location.href="index.html"}};
+        _0x1a9b(_0x4d2e[20]).onclick=()=>{if(confirm('¿BORRAR TODO EL JUEGO?')){localStorage.clear();location.href="index_menu.html"}};
 
         _0xup();_0xrd()
     })
