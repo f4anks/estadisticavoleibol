@@ -7,45 +7,171 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" href="./img/logo.png">
-    <title>Control Voley</title>
-    <script src="./libs/tailwind.js"></script>
+    <title>Control Voley - Acceso</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    
     <style>
-        body { background: #111827; overflow: hidden; height: 100vh; font-family: sans-serif; }
-        .app-bg { background: linear-gradient(180deg, #1f2937 0%, #111827 100%); }
-        .hidden { display: none; }
+        body { 
+            background: #004080; /* Azul Eléctrico Base */
+            font-family: 'Inter', sans-serif;
+            color: white;
+            min-height: 100vh;
+        }
+        .app-bg { 
+            background: radial-gradient(circle at top, #0056FF 0%, #004080 100%); 
+        }
+        .card {
+            background-color: #ffffff;
+            color: #1f2937;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
         .active-btn { transition: transform 0.1s; }
-        .active-btn:active { transform: scale(0.95); }
+        .active-btn:active { transform: scale(0.96); }
+        .hidden { display: none; }
+        
+        /* Estilo para los inputs */
+        input {
+            border: 1px solid #d1d5db !important;
+            background-color: #f9fafb !important;
+            color: #111827 !important;
+        }
+        input:focus {
+            outline: none;
+            ring: 2px;
+            ring-color: #0056FF;
+            border-color: #0056FF !important;
+        }
     </style>
 </head>
-<body class="app-bg flex flex-col items-center justify-between p-8 text-white">
+<body class="app-bg flex flex-col items-center p-6 sm:p-10">
 
-    <div id="installArea" class="hidden w-full max-w-sm bg-blue-600 p-4 rounded-2xl flex items-center justify-between shadow-2xl animate-bounce">
+    <div id="installArea" class="hidden w-full max-w-md bg-blue-600 p-4 rounded-2xl flex items-center justify-between shadow-2xl animate-bounce mb-8">
         <div class="flex items-center gap-3">
             <img src="./img/logo.png" class="w-10 h-10 rounded-lg bg-white p-1">
             <div>
-                <p class="text-xs font-bold">Instalar App</p>
-                <p class="text-[10px] opacity-80">Modo offline disponible</p>
+                <p class="text-xs font-bold text-white">Instalar App</p>
+                <p class="text-[10px] text-blue-100">Modo offline disponible</p>
             </div>
         </div>
         <button id="btnInstall" class="bg-white text-blue-600 px-4 py-2 rounded-xl text-xs font-black uppercase">Obtener</button>
     </div>
 
-    <div class="flex flex-col items-center w-full">
-        <div class="bg-white p-6 rounded-[2.5rem] shadow-2xl mb-6">
-            <img src="./img/logo.png" alt="Logo" class="w-24 h-24 object-contain">
+    <header class="flex flex-col items-center mb-10">
+        <div class="bg-white p-5 rounded-[2.5rem] shadow-2xl mb-4 border-4 border-blue-400/20">
+            <img src="./img/logo.png" alt="Logo" class="w-20 h-20 object-contain">
         </div>
-        <h1 class="text-3xl font-black italic tracking-tighter mb-2">CONTROL <span class="text-blue-500">VOLEY</span></h1>
-        <p class="text-gray-400 text-sm text-center px-4">Lleva el control de tus juegos y analiza tus estadísticas sin conexión.</p>
+        <h1 class="text-4xl font-black italic tracking-tighter">CONTROL <span class="text-yellow-400">VOLEY</span></h1>
+        <p class="text-blue-100 text-sm font-medium opacity-80">Gestión y Análisis Estadístico Profesional</p>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-4xl mb-10">
+        <div class="card p-4 text-center">
+            <span class="text-2xl">📋</span>
+            <h3 class="font-bold text-sm mt-1">Nómina</h3>
+        </div>
+        <div class="card p-4 text-center">
+            <span class="text-2xl">👤</span>
+            <h3 class="font-bold text-sm mt-1">Perfiles</h3>
+        </div>
+        <div class="card p-4 text-center">
+            <span class="text-2xl">📈</span>
+            <h3 class="font-bold text-sm mt-1">Análisis</h3>
+        </div>
     </div>
 
-    <div class="w-full max-w-sm pb-10">
-        <a href="index_estad.html" class="active-btn flex items-center justify-center gap-3 w-full bg-blue-600 text-white font-black py-5 rounded-2xl text-xl shadow-lg shadow-blue-900/40 uppercase">
-            <span>📊</span> Estadísticas
-        </a>
-        <p class="text-center mt-6 text-[10px] text-gray-600 uppercase font-bold tracking-[0.3em]">Versión Pro 2026</p>
-    </div>
+    <main class="w-full max-w-md">
+        
+        <div id="loginSection" class="card p-8">
+            <h2 class="text-2xl font-black text-center mb-6 text-blue-700">ACCESO PRO</h2>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Email</label>
+                    <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl" placeholder="usuario@control.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Contraseña</label>
+                    <input type="password" id="password" required class="w-full px-4 py-3 rounded-xl" placeholder="••••••••">
+                </div>
+                <button type="submit" id="btnLogin" class="active-btn w-full bg-[#0056FF] hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg transition-all uppercase tracking-widest mt-2">
+                    Iniciar Sesión
+                </button>
+                <p id="err" class="text-center text-red-500 text-xs font-bold mt-4 hidden"></p>
+            </form>
+        </div>
 
-    <script>
+        <div id="accessSection" class="hidden flex flex-col items-center">
+            <a href="index_menu.html" class="active-btn card flex items-center justify-center gap-4 w-full py-6 font-black text-blue-600 text-xl uppercase tracking-tighter border-2 border-blue-200">
+                <span>🚀</span> Entrar al Sistema
+            </a>
+            <button id="btnLogout" class="mt-4 text-blue-200 text-xs font-bold uppercase tracking-widest opacity-60 hover:opacity-100">Cerrar Sesión Actual</button>
+        </div>
+
+    </main>
+
+    <footer class="mt-auto pt-10 pb-6 text-center">
+        <p class="text-[10px] text-blue-300 uppercase font-bold tracking-[0.3em] mb-2">Versión Pro 2026</p>
+        <p class="text-[9px] text-blue-400 opacity-70">Diseño y Sistema: Sistematikos - Frank Hernandez</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+
+        // Configuración Firebase (Tus datos originales)
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5RB7mm1j-0gjCNTUEJTkyEqLjyZ3C7ws",
+            authDomain: "datacontrolvoley-ff556.firebaseapp.com",
+            projectId: "datacontrolvoley-ff556",
+            storageBucket: "datacontrolvoley-ff556.firebasestorage.app",
+            messagingSenderId: "516409072606",
+            appId: "1:516409072606:web:132538dba358a077d71b4f"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loginSection = document.getElementById('loginSection');
+        const accessSection = document.getElementById('accessSection');
+        const loginForm = document.getElementById('loginForm');
+        const btnLogin = document.getElementById('btnLogin');
+        const errDisplay = document.getElementById('err');
+
+        // --- MANEJO DE ESTADO DE SESIÓN ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loginSection.classList.add('hidden');
+                accessSection.classList.remove('hidden');
+            } else {
+                loginSection.classList.remove('hidden');
+                accessSection.classList.add('hidden');
+            }
+        });
+
+        // --- LÓGICA DE LOGIN ---
+        loginForm.onsubmit = async (e) => {
+            e.preventDefault();
+            errDisplay.classList.add('hidden');
+            btnLogin.disabled = true;
+            btnLogin.textContent = "AUTENTICANDO...";
+
+            try {
+                await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value);
+                // El onAuthStateChanged se encargará de mostrar el botón de entrada
+            } catch (error) {
+                errDisplay.textContent = "CREDENCIALES INCORRECTAS";
+                errDisplay.classList.remove('hidden');
+            } finally {
+                btnLogin.disabled = false;
+                btnLogin.textContent = "INICIAR SESIÓN";
+            }
+        };
+
+        // --- CERRAR SESIÓN ---
+        document.getElementById('btnLogout').onclick = () => signOut(auth);
+
+        // --- PWA & INSTALACIÓN ---
         let deferredPrompt;
         const installArea = document.getElementById('installArea');
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -53,6 +179,7 @@
             deferredPrompt = e;
             installArea.classList.remove('hidden');
         });
+
         document.getElementById('btnInstall').addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
@@ -61,9 +188,13 @@
                 deferredPrompt = null;
             }
         });
+
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
         }
+
+        // Bloqueo de seguridad Sistematikos
+        document.addEventListener("contextmenu", e => e.preventDefault());
     </script>
 </body>
 </html>
