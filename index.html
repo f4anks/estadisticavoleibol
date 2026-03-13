@@ -2,60 +2,40 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" href="./img/logo.png">
-    <title>Control Voley - Acceso</title>
+    <title>Control Voley - Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body{background:#111827;font-family:'Inter',system-ui,sans-serif;color:white;min-height:100vh;user-select:none;display:flex;flex-direction:column;align-items:center}
-        .card{background:#1f2937;border-radius:2rem;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.05)}
-        input{background:#374151!important;border:1px solid #4b5563!important;color:white!important;transition:all 0.2s}
-        input:focus{border-color:#3b82f6!important;box-shadow:0 0 0 2px rgba(59,130,246,0.3)}
+        body{background:#111827;font-family:'Inter',sans-serif;color:white;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+        .card{background:#1f2937;padding:2.5rem;border-radius:2rem;width:100%;max-width:400px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.05)}
+        input{background:#374151!important;border:1px solid #4b5563!important;color:white!important}
         .install-banner{background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);box-shadow:0 10px 20px -5px rgba(37,99,235,0.4)}
     </style>
 </head>
-<body class="p-6">
-    
-    <div id="iB" class="hidden install-banner w-full max-w-md p-4 rounded-3xl flex items-center justify-between mb-8 animate-bounce mt-4">
+<body>
+    <div id="iB" class="hidden install-banner w-full max-w-md p-4 rounded-3xl flex items-center justify-between mb-8 animate-bounce">
         <div class="flex items-center gap-3">
             <img src="./img/logo.png" class="w-10 h-10 rounded-lg bg-white p-1">
-            <div><p class="text-xs font-black text-white">Instalar App</p><p class="text-[10px] text-blue-100 uppercase font-bold">Modo offline disponible</p></div>
+            <div><p class="text-xs font-black">Instalar App</p><p class="text-[10px] uppercase opacity-80">Modo offline listo</p></div>
         </div>
         <button id="iBtn" class="bg-white text-blue-600 px-5 py-2 rounded-xl text-xs font-black uppercase shadow-lg">Obtener</button>
     </div>
 
-    <header class="flex flex-col items-center mb-8 mt-6">
-        <img src="./img/logo.png" alt="Logo" class="w-28 h-28 mb-4 drop-shadow-2xl">
-        <h1 class="text-3xl font-black italic tracking-tighter uppercase">CONTROL <span class="text-blue-500">VOLEY</span></h1>
-        <p class="text-gray-500 text-[10px] font-bold uppercase tracking-[0.3em] mt-2">Versión Pro 2026</p>
-    </header>
-
-    <main class="w-full max-w-md">
-        <div class="card p-8">
-            <h2 class="text-lg font-black text-center mb-6 text-blue-400 uppercase tracking-widest">Iniciar Sesión</h2>
-            <form id="lF" class="space-y-4">
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1 ml-1">Email de Usuario</label>
-                    <input type="email" id="e" required class="w-full px-4 py-3 rounded-xl outline-none" placeholder="nombre@correo.com">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1 ml-1">Contraseña</label>
-                    <input type="password" id="p" required class="w-full px-4 py-3 rounded-xl outline-none" placeholder="••••••••">
-                </div>
-                <button type="submit" id="b" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-xl transition-all uppercase tracking-[0.2em] mt-4 active:scale-95">
-                    Autenticar
-                </button>
-                <p id="err" class="text-center text-red-500 text-[10px] font-black mt-4 hidden uppercase tracking-widest">Acceso Denegado</p>
-            </form>
+    <div class="card">
+        <div class="text-center mb-8">
+            <img src="./img/logo.png" class="w-20 h-20 mx-auto mb-4">
+            <h1 class="text-3xl font-black uppercase italic">Control <span class="text-blue-500">Voley</span></h1>
         </div>
-    </main>
-
-    <footer class="mt-auto py-8">
-        <p class="text-[9px] text-gray-600 font-bold uppercase tracking-widest">Programación: Sistematikos - Frank Hernandez</p>
-    </footer>
+        <form id="lF" class="space-y-4">
+            <input type="email" id="e" placeholder="Email" class="w-full p-4 rounded-xl outline-none" required>
+            <input type="password" id="p" placeholder="Contraseña" class="w-full p-4 rounded-xl outline-none" required>
+            <button type="submit" id="b" class="w-full bg-blue-600 py-4 rounded-xl font-black uppercase tracking-widest active:scale-95 transition-all">Autenticar</button>
+            <p id="err" class="text-red-500 text-center text-[10px] font-black hidden mt-4 tracking-widest uppercase">Error de Acceso</p>
+        </form>
+    </div>
 
     <script type="module">
         import{initializeApp}from"https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -64,39 +44,51 @@
         const fc={apiKey:"AIzaSyB5RB7mm1j-0gjCNTUEJTkyEqLjyZ3C7ws",authDomain:"datacontrolvoley-ff556.firebaseapp.com",projectId:"datacontrolvoley-ff556",storageBucket:"datacontrolvoley-ff556.firebasestorage.app",messagingSenderId:"516409072606",appId:"1:516409072606:web:132538dba358a077d71b4f"};
         const a=initializeApp(fc),b=getAuth(a);
 
-        // Si ya hay sesión activa, saltar al menú directamente
         onAuthStateChanged(b,u=>{ if(u) window.location.href='index_menu.html'; });
 
-        // Lógica de Login
         document.getElementById('lF').onsubmit=async(ev)=>{
             ev.preventDefault();
-            const btn=document.getElementById('b'), er=document.getElementById('err');
-            btn.disabled=true; btn.textContent="VERIFICANDO...";
-            er.classList.add('hidden');
-            
+            const btn=document.getElementById('b'),er=document.getElementById('err');
+            btn.disabled=true; btn.textContent="VALIDANDO...";
             try{
                 await signInWithEmailAndPassword(b,document.getElementById('e').value,document.getElementById('p').value);
                 window.location.href='index_menu.html';
             }catch(x){
-                er.classList.remove('hidden');
-                btn.disabled=false; btn.textContent="AUTENTICAR";
+                er.classList.remove('hidden'); btn.disabled=false; btn.textContent="AUTENTICAR";
             }
         };
 
-        // Lógica PWA (Banner Instalar)
+        // LÓGICA DE INSTALACIÓN Y SERVICE WORKER
         let dP;
         window.addEventListener('beforeinstallprompt',e=>{
             e.preventDefault(); dP=e;
             document.getElementById('iB').classList.remove('hidden');
         });
+
         document.getElementById('iBtn').onclick=async()=>{
             if(dP){
                 dP.prompt();
                 const{outcome}=await dP.userChoice;
-                if(outcome==='accepted')document.getElementById('iB').classList.add('hidden');
+                if(outcome==='accepted') document.getElementById('iB').classList.add('hidden');
                 dP=null;
             }
         };
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').then(reg => {
+                // Forzar actualización si hay un Service Worker nuevo esperando
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            if(confirm("Nueva versión disponible. ¿Actualizar ahora?")) {
+                                window.location.reload();
+                            }
+                        }
+                    });
+                });
+            });
+        }
     </script>
 </body>
 </html>
