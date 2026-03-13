@@ -17,6 +17,7 @@
             font-family: 'Inter', sans-serif;
             color: white;
             min-height: 100vh;
+            user-select: none;
         }
         .app-bg { 
             background: radial-gradient(circle at top, #0056FF 0%, #004080 100%); 
@@ -25,7 +26,7 @@
             background-color: #ffffff;
             color: #1f2937;
             border-radius: 1.5rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
         }
         .active-btn { transition: transform 0.1s; }
         .active-btn:active { transform: scale(0.96); }
@@ -38,9 +39,8 @@
         }
         input:focus {
             outline: none;
-            ring: 2px;
-            ring-color: #0056FF;
             border-color: #0056FF !important;
+            box-shadow: 0 0 0 3px rgba(0, 86, 255, 0.2);
         }
     </style>
 </head>
@@ -61,22 +61,22 @@
         <div class="bg-white p-5 rounded-[2.5rem] shadow-2xl mb-4 border-4 border-blue-400/20">
             <img src="./img/logo.png" alt="Logo" class="w-24 h-24 object-contain">
         </div>
-        <h1 class="text-4xl font-black italic tracking-tighter">CONTROL <span class="text-yellow-400">VOLEY</span></h1>
-        <p class="text-blue-100 text-sm font-medium opacity-80 mt-2">Gestión y Análisis Estadístico Profesional</p>
+        <h1 class="text-4xl font-black italic tracking-tighter text-center uppercase">CONTROL <span class="text-yellow-400">VOLEY</span></h1>
+        <p class="text-blue-100 text-sm font-medium opacity-80 mt-2 text-center">Gestión y Análisis Estadístico Profesional</p>
     </header>
 
     <main class="w-full max-w-md">
         
         <div id="loginSection" class="card p-8">
-            <h2 class="text-2xl font-black text-center mb-6 text-blue-700">ACCESO PRO</h2>
+            <h2 class="text-2xl font-black text-center mb-6 text-blue-700 uppercase tracking-tight">Acceso Pro</h2>
             <form id="loginForm" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Email</label>
-                    <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl" placeholder="usuario@control.com">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Email</label>
+                    <input type="email" id="email" required class="w-full px-4 py-3 rounded-xl transition-all" placeholder="usuario@control.com">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Contraseña</label>
-                    <input type="password" id="password" required class="w-full px-4 py-3 rounded-xl" placeholder="••••••••">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1 ml-1">Contraseña</label>
+                    <input type="password" id="password" required class="w-full px-4 py-3 rounded-xl transition-all" placeholder="••••••••">
                 </div>
                 <button type="submit" id="btnLogin" class="active-btn w-full bg-[#0056FF] hover:bg-blue-700 text-white font-black py-4 rounded-xl shadow-lg transition-all uppercase tracking-widest mt-2">
                     Iniciar Sesión
@@ -85,11 +85,18 @@
             </form>
         </div>
 
-        <div id="accessSection" class="hidden flex flex-col items-center">
-            <a href="index_menu.html" class="active-btn card flex items-center justify-center gap-4 w-full py-6 font-black text-blue-600 text-xl uppercase tracking-tighter border-2 border-blue-200">
+        <div id="accessSection" class="hidden flex flex-col items-center w-full">
+            <p id="uidDisplay" class="text-[10px] text-blue-100 mb-3 font-mono font-bold tracking-wider opacity-90 bg-blue-900/40 px-4 py-1.5 rounded-full border border-blue-400/30">
+                Cargando ID...
+            </p>
+            
+            <a href="index_estad.html" class="active-btn card flex items-center justify-center gap-4 w-full py-6 font-black text-blue-600 text-xl uppercase tracking-tighter border-2 border-blue-200">
                 <span>🚀</span> Entrar al Sistema
             </a>
-            <button id="btnLogout" class="mt-4 text-blue-200 text-xs font-bold uppercase tracking-widest opacity-60 hover:opacity-100">Cerrar Sesión Actual</button>
+            
+            <button id="btnLogout" class="mt-6 text-blue-200 text-xs font-bold uppercase tracking-[0.2em] opacity-60 hover:opacity-100 transition-opacity">
+                Cerrar Sesión Actual
+            </button>
         </div>
 
     </main>
@@ -117,30 +124,40 @@
 
         const loginSection = document.getElementById('loginSection');
         const accessSection = document.getElementById('accessSection');
+        const uidDisplay = document.getElementById('uidDisplay');
         const loginForm = document.getElementById('loginForm');
         const btnLogin = document.getElementById('btnLogin');
         const errDisplay = document.getElementById('err');
 
+        // --- OBSERVAR ESTADO DE LA SESIÓN ---
         onAuthStateChanged(auth, (user) => {
             if (user) {
+                uidDisplay.textContent = `UID: ${user.uid}`;
                 loginSection.classList.add('hidden');
                 accessSection.classList.remove('hidden');
             } else {
                 loginSection.classList.remove('hidden');
                 accessSection.classList.add('hidden');
+                uidDisplay.textContent = "";
             }
         });
 
+        // --- LÓGICA DE INICIO DE SESIÓN ---
         loginForm.onsubmit = async (e) => {
             e.preventDefault();
             errDisplay.classList.add('hidden');
             btnLogin.disabled = true;
             btnLogin.textContent = "AUTENTICANDO...";
 
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+
             try {
-                await signInWithEmailAndPassword(auth, document.getElementById('email').value, document.getElementById('password').value);
+                await signInWithEmailAndPassword(auth, email, pass);
+                // La redirección ocurre por el observer o puedes forzarla:
+                window.location.href = "index_estad.html";
             } catch (error) {
-                errDisplay.textContent = "CREDENCIALES INCORRECTAS";
+                errDisplay.textContent = "ERROR: CREDENCIALES INVÁLIDAS";
                 errDisplay.classList.remove('hidden');
             } finally {
                 btnLogin.disabled = false;
@@ -148,8 +165,10 @@
             }
         };
 
+        // --- CERRAR SESIÓN ---
         document.getElementById('btnLogout').onclick = () => signOut(auth);
 
+        // --- PWA INSTALACIÓN ---
         let deferredPrompt;
         const installArea = document.getElementById('installArea');
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -171,7 +190,11 @@
             navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
         }
 
+        // --- SEGURIDAD SISTEMATIKOS ---
         document.addEventListener("contextmenu", e => e.preventDefault());
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) e.preventDefault();
+        });
     </script>
 </body>
 </html>
