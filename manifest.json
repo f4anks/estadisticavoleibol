@@ -1,6 +1,11 @@
 {
-  "short_name": "CV Stats",
-  "name": "Control Voley Stats",
+  "name": "Control Voley Pro",
+  "short_name": "VoleyStats",
+  "description": "Sistema de estadísticas de voleibol profesional",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#2563eb",
   "icons": [
     {
       "src": "./img/logo.png",
@@ -11,13 +16,8 @@
     {
       "src": "./img/logo.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
-  ],
-  "start_url": "./index.html",
-  "display": "standalone",
-  "theme_color": "#0056FF",
-  "background_color": "#F7F8FA",
-  "scope": "./",
-  "orientation": "portrait"
+  ]
 }
