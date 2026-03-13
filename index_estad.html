@@ -6,7 +6,7 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" href="./img/logo.png">
     <link rel="apple-touch-icon" href="./img/logo.png">
-    <title>CV Stats - Pro Mode</title>
+    <title>Voley Stats - Estadísticas Pro</title>
     <script src="./libs/tailwind.js"></script>
     <script src="./libs/charts.js"></script>
     <style>
@@ -18,10 +18,10 @@
     <main class="max-w-md mx-auto space-y-6">
         <header class="flex justify-between items-center py-2">
             <div>
-                <h1 class="text-2xl font-black italic tracking-tighter text-gray-900">CONTROL <span class="text-blue-600">VOLEY</span></h1>
+                <h1 class="text-2xl font-black italic tracking-tighter text-gray-900 uppercase">VOLEY <span class="text-blue-600">STATS</span></h1>
                 <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">Estadísticas Pro</p>
             </div>
-            <button onclick="window.location.href='index.html'" class="bg-red-600 text-white px-5 py-2 rounded-2xl text-xs font-black shadow-lg uppercase tracking-wider">Salir</button>
+            <button onclick="window.location.href='index.html'" class="bg-red-600 text-white px-5 py-2 rounded-2xl text-xs font-black shadow-lg uppercase tracking-wider active-btn">Salir</button>
         </header>
 
         <div class="card p-6">
@@ -38,7 +38,7 @@
         <div class="card p-6 border-t-4 border-blue-600">
             <h2 class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Panel de Registro</h2>
             <form id="f" class="space-y-4">
-                <select id="ps" class="w-full app-input text-gray-900 shadow-sm"></select>
+                <select id="ps" class="w-full app-input text-gray-900 shadow-sm font-bold"></select>
                 <div id="actionContainer" class="action-grid"></div>
                 <input type="hidden" id="as">
                 <button class="btn-intense w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-blue-200 mt-2">Registrar Acción</button>
@@ -61,8 +61,118 @@
         </div>
     </main>
 
+    <footer class="mt-8 mb-4 text-center">
+        <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Programación y Desarrollo: Sistematikos - Frank Hernandez</p>
+    </footer>
+
 <script>
-(function(){const _0x4d2e=['keydown','keyCode','ctrlKey','shiftKey','preventDefault','DOMContentLoaded','vP','vM','vS','st','c1','c2','sum','ps','as','add','pN','pM','f','rs','ra'];const _0x1a9b=(id)=>document.getElementById(id);document.addEventListener(_0x4d2e[0],function(_0xe){if(_0xe[_0x4d2e[1]]==123||(_0xe[_0x4d2e[2]]&&_0xe[_0x4d2e[3]]&&(_0xe[_0x4d2e[1]]==73||_0xe[_0x4d2e[1]]==74))||(_0xe[_0x4d2e[2]]&&_0xe[_0x4d2e[1]]==85)){_0xe[_0x4d2e[4]]();return false}});let _0x55x=[],_0x11z=[],_0x99k=[],_0xbb1=null,_0xbb2=null;const _0xdict={'Servicio Bueno S#':1,'Ataque Bueno A#':1,'Bloqueo Bueno B#':1,'Coloque Bueno C#':1,'Defensa Bueno D#':1,'Recepcion Bueno R#':1,'Servicio Malo S=':-1,'Ataque Malo A=':-1,'Bloqueo Malo B=':-1,'Recepcion Malo R=':-1,'Coloque Malo C=':-1,'Defensa Malo D=':-1};const _0xlbl={S:'Servicio',A:'Ataque',B:'Bloqueo',R:'Recepcion',C:'Coloque',D:'Defensa'};const _0xclr={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},_0xcfg={scales:{y:{ticks:{stepSize:1,font:{weight:'bold'}}}},responsive:1,maintainAspectRatio:0};function _0xmsg(_0xm){const _0xt=document.createElement('div');_0xt.className='toast';_0xt.textContent=_0xm;document.body.appendChild(_0xt);setTimeout(()=>_0xt.classList.add('v'),10);setTimeout(()=>{_0xt.classList.remove('v');setTimeout(()=>_0xt.remove(),300)},3000)}function _0xsv(){localStorage.setItem(_0x4d2e[6],JSON.stringify(_0x55x));localStorage.setItem(_0x4d2e[7],JSON.stringify(_0x11z));localStorage.setItem(_0x4d2e[8],JSON.stringify(_0x99k))}function _0xrd(){const _0xs=_0x1a9b(_0x4d2e[9]);_0xs.innerHTML='';if(!_0x55x.length){_0xs.innerHTML='<p class="text-center text-gray-400 py-4 italic">Sin datos</p>';return}let _0xd={};_0x55x.forEach(_0xp=>_0xd[_0xp.number]={p:0,n:0,a:{}});_0x99k.forEach(_0xl=>{let _0xk=_0xd[_0xl.playerNumber];if(_0xk){let _0xv=_0xdict[_0xl.action],_0xt=_0xl.action.charAt(_0xl.action.length-2);_0xv>0?_0xk.p++:_0xk.n++;if(!_0xk.a[_0xt])_0xk.a[_0xt]={p:0,n:0};_0xv>0?_0xk.a[_0xt].p++:_0xk.a[_0xt].n++}});_0x55x.forEach(_0xp=>{let _0xk=_0xd[_0xp.number],_0xst='';Object.keys(_0xk.a).forEach(_0xx=>_0xst+=`<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">${_0xx}:${_0xk.a[_0xx].p}|${_0xk.a[_0xx].n}</span> `);_0xs.innerHTML+=`<div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 shadow-sm"><div class="flex justify-between items-center font-black text-sm mb-2"><span>#${_0xp.number} ${_0xp.name}</span><span class="text-blue-600 bg-white px-3 py-1 rounded-full shadow-sm">DIF: ${_0xk.p-_0xk.n}</span></div><div class="text-[10px] font-bold flex flex-wrap gap-1">${_0xst}</div></div>`});if(typeof Chart==='undefined')return;const _0xc1=_0x1a9b(_0x4d2e[10]).getContext('2d'),_0xc2=_0x1a9b(_0x4d2e[11]).getContext('2d'),_0xlst=Object.values(_0xlbl);let _0xv1={p:[],n:[]},_0xv2={p:[],n:[]},_0xtp=0,_0xtn=0;Object.keys(_0xlbl).forEach(_0xk=>{let _0xp=0,_0xn=0,_0xap=0,_0xan=0;_0x99k.forEach(_0xz=>{if(_0xz.action.charAt(_0xz.action.length-2)===_0xk)_0xdict[_0xz.action]>0?_0xp++:_0xn++});_0x11z.forEach(_0xz=>{if(_0xz.action.charAt(_0xz.action.length-2)===_0xk){if(_0xdict[_0xz.action]>0){_0xap++;_0xtp++}else{_0xan++;_0xtn++}}});_0xv1.p.push(_0xp);_0xv1.n.push(_0xn);_0xv2.p.push(_0xap);_0xv2.n.push(_0xan)});if(_0xbb1)_0xbb1.destroy();_0xbb1=new Chart(_0xc1,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv1.p,backgroundColor:_0xclr.b,borderRadius:8},{label:'-',data:_0xv1.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'SET ACTUAL',font:{weight:'900',size:14}}}}});_0x1a9b(_0x4d2e[12]).innerHTML=`POS: ${_0xtp} | NEG: ${_0xtn} | TOTAL: ${_0xtp+_0xtn}`;if(_0xbb2)_0xbb2.destroy();_0xbb2=new Chart(_0xc2,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv2.p,backgroundColor:_0xclr.g,borderRadius:8},{label:'-',data:_0xv2.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'PARTIDO COMPLETO',font:{weight:'900',size:14}}}}})}document.addEventListener(_0x4d2e[5],()=>{_0x55x=JSON.parse(localStorage.getItem(_0x4d2e[6])||'[]');_0x11z=JSON.parse(localStorage.getItem(_0x4d2e[7])||'[]');_0x99k=JSON.parse(localStorage.getItem(_0x4d2e[8])||'[]');const _0xps=_0x1a9b(_0x4d2e[13]),_0xas=_0x1a9b(_0x4d2e[14]),_0xcont=_0x1a9b('actionContainer');Object.keys(_0xdict).forEach(_0xk=>{const _0xb=document.createElement('div');const _0xisp=_0xdict[_0xk]>0;const _0xpt=_0xk.split(' ');_0xb.innerHTML=`<span>${_0xpt[0]}</span><span class="text-lg">${_0xpt[2]}</span>`;_0xb.className=`btn-action ${_0xisp?'btn-pos':'btn-neg'}`;_0xb.onclick=()=>{document.querySelectorAll('.btn-action').forEach(_0xx=>_0xx.classList.remove('btn-selected'));_0xb.classList.add('btn-selected');_0xas.value=_0xk};_0xcont.appendChild(_0xb)});function _0xup(){_0xps.innerHTML='<option value="" disabled selected>SELECCIONAR ATLETA</option>';_0x55x.sort((a,b)=>a.number-b.number).forEach(_0xp=>{let _0xo=document.createElement('option');_0xo.value=_0xp.number;_0xo.textContent=`#${_0xp.number} - ${_0xp.name}`;_0xps.appendChild(_0xo)})} _0x1a9b(_0x4d2e[15]).onclick=()=>{let _0xn=parseInt(_0x1a9b(_0x4d2e[16]).value),_0xm=_0x1a9b(_0x4d2e[17]).value;if(_0xn&&_0xm){_0x55x.push({number:_0xn,name:_0xm});_0xsv();_0xup();_0xrd();_0x1a9b(_0x4d2e[16]).value='';_0x1a9b(_0x4d2e[17]).value='';_0xmsg('¡OK!')}};_0x1a9b(_0x4d2e[18]).onsubmit=_0xe=>{_0xe.preventDefault();if(_0xps.value&&_0xas.value){let _0xl={playerNumber:parseInt(_0xps.value),action:_0xas.value};_0x11z.push(_0xl);_0x99k.push(_0xl);_0xsv();_0xrd();_0xmsg('REGISTRADO');document.querySelectorAll('.btn-action').forEach(_0xx=>_0xx.classList.remove('btn-selected'));_0xas.value=""}else{_0xmsg('Falta Atleta o Acción')}};_0x1a9b(_0x4d2e[19]).onclick=()=>{if(confirm('¿Limpiar puntos del set?')){_0x99k=[];_0xsv();_0xrd()}};_0x1a9b(_0x4d2e[20]).onclick=()=>{if(confirm('¿BORRAR TODO EL JUEGO?')){localStorage.clear();location.href="index.html"}};_0xup();_0xrd()})})()
+(function(){
+    const _0x4d2e=['keydown','keyCode','ctrlKey','shiftKey','preventDefault','DOMContentLoaded','vP','vM','vS','st','c1','c2','sum','ps','as','add','pN','pM','f','rs','ra'];
+    const _0x1a9b=(id)=>document.getElementById(id);
+
+    // Protección de código Sistematikos
+    document.addEventListener(_0x4d2e[0],function(_0xe){
+        if(_0xe[_0x4d2e[1]]==123||(_0xe[_0x4d2e[2]]&&_0xe[_0x4d2e[3]]&&(_0xe[_0x4d2e[1]]==73||_0xe[_0x4d2e[1]]==74))||(_0xe[_0x4d2e[2]]&&_0xe[_0x4d2e[1]]==85)){_0xe[_0x4d2e[4]]();return false}
+    });
+
+    let _0x55x=[],_0x11z=[],_0x99k=[],_0xbb1=null,_0xbb2=null;
+    const _0xdict={'Servicio Bueno S#':1,'Ataque Bueno A#':1,'Bloqueo Bueno B#':1,'Coloque Bueno C#':1,'Defensa Bueno D#':1,'Recepcion Bueno R#':1,'Servicio Malo S=':-1,'Ataque Malo A=':-1,'Bloqueo Malo B=':-1,'Recepcion Malo R=':-1,'Coloque Malo C=':-1,'Defensa Malo D=':-1};
+    const _0xlbl={S:'Servicio',A:'Ataque',B:'Bloqueo',R:'Recepcion',C:'Coloque',D:'Defensa'};
+    const _0xclr={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},_0xcfg={scales:{y:{ticks:{stepSize:1,font:{weight:'bold'}}}},responsive:1,maintainAspectRatio:0};
+
+    function _0xmsg(_0xm){
+        const _0xt=document.createElement('div');_0xt.className='toast';_0xt.textContent=_0xm;document.body.appendChild(_0xt);
+        setTimeout(()=>_0xt.classList.add('v'),10);
+        setTimeout(()=>{_0xt.classList.remove('v');setTimeout(()=>_0xt.remove(),300)},3000)
+    }
+
+    function _0xsv(){
+        localStorage.setItem(_0x4d2e[6],JSON.stringify(_0x55x));
+        localStorage.setItem(_0x4d2e[7],JSON.stringify(_0x11z));
+        localStorage.setItem(_0x4d2e[8],JSON.stringify(_0x99k))
+    }
+
+    function _0xrd(){
+        const _0xs=_0x1a9b(_0x4d2e[9]);_0xs.innerHTML='';
+        if(!_0x55x.length){_0xs.innerHTML='<p class="text-center text-gray-400 py-4 italic">Sin datos</p>';return}
+        let _0xd={};_0x55x.forEach(_0xp=>_0xd[_0xp.number]={p:0,n:0,a:{}});
+        _0x99k.forEach(_0xl=>{
+            let _0xk=_0xd[_0xl.playerNumber];
+            if(_0xk){
+                let _0xv=_0xdict[_0xl.action],_0xt=_0xl.action.charAt(_0xl.action.length-2);
+                _0xv>0?_0xk.p++:_0xk.n++;
+                if(!_0xk.a[_0xt])_0xk.a[_0xt]={p:0,n:0};
+                _0xv>0?_0xk.a[_0xt].p++:_0xk.a[_0xt].n++
+            }
+        });
+        _0x55x.forEach(_0xp=>{
+            let _0xk=_0xd[_0xp.number],_0xst='';
+            Object.keys(_0xk.a).forEach(_0xx=>_0xst+=`<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">${_0xx}:${_0xk.a[_0xx].p}|${_0xk.a[_0xx].n}</span> `);
+            _0xs.innerHTML+=`<div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 shadow-sm"><div class="flex justify-between items-center font-black text-sm mb-2"><span>#${_0xp.number} ${_0xp.name}</span><span class="text-blue-600 bg-white px-3 py-1 rounded-full shadow-sm">DIF: ${_0xk.p-_0xk.n}</span></div><div class="text-[10px] font-bold flex flex-wrap gap-1">${_0xst}</div></div>`
+        });
+
+        if(typeof Chart==='undefined')return;
+        const _0xc1=_0x1a9b(_0x4d2e[10]).getContext('2d'),_0xc2=_0x1a9b(_0x4d2e[11]).getContext('2d'),_0xlst=Object.values(_0xlbl);
+        let _0xv1={p:[],n:[]},_0xv2={p:[],n:[]},_0xtp=0,_0xtn=0;
+        Object.keys(_0xlbl).forEach(_0xk=>{
+            let _0xp=0,_0xn=0,_0xap=0,_0xan=0;
+            _0x99k.forEach(_0xz=>{if(_0xz.action.charAt(_0xz.action.length-2)===_0xk)_0xdict[_0xz.action]>0?_0xp++:_0xn++});
+            _0x11z.forEach(_0xz=>{if(_0xz.action.charAt(_0xz.action.length-2)===_0xk){if(_0xdict[_0xz.action]>0){_0xap++;_0xtp++}else{_0xan++;_0xtn++}}});
+            _0xv1.p.push(_0xp);_0xv1.n.push(_0xn);_0xv2.p.push(_0xap);_0xv2.n.push(_0xan)
+        });
+
+        if(_0xbb1)_0xbb1.destroy();
+        _0xbb1=new Chart(_0xc1,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv1.p,backgroundColor:_0xclr.b,borderRadius:8},{label:'-',data:_0xv1.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'SET ACTUAL',font:{weight:'900',size:14}}}}});
+        _0x1a9b(_0x4d2e[12]).innerHTML=`POS: ${_0xtp} | NEG: ${_0xtn} | TOTAL: ${_0xtp+_0xtn}`;
+        if(_0xbb2)_0xbb2.destroy();
+        _0xbb2=new Chart(_0xc2,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv2.p,backgroundColor:_0xclr.g,borderRadius:8},{label:'-',data:_0xv2.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'PARTIDO COMPLETO',font:{weight:'900',size:14}}}}})
+    }
+
+    document.addEventListener(_0x4d2e[5],()=>{
+        _0x55x=JSON.parse(localStorage.getItem(_0x4d2e[6])||'[]');
+        _0x11z=JSON.parse(localStorage.getItem(_0x4d2e[7])||'[]');
+        _0x99k=JSON.parse(localStorage.getItem(_0x4d2e[8])||'[]');
+        const _0xps=_0x1a9b(_0x4d2e[13]),_0xas=_0x1a9b(_0x4d2e[14]),_0xcont=_0x1a9b('actionContainer');
+        
+        Object.keys(_0xdict).forEach(_0xk=>{
+            const _0xb=document.createElement('div');
+            const _0xisp=_0xdict[_0xk]>0;
+            const _0xpt=_0xk.split(' ');
+            _0xb.innerHTML=`<span>${_0xpt[0]}</span><span class="text-lg">${_0xpt[2]}</span>`;
+            _0xb.className=`btn-action ${_0xisp?'btn-pos':'btn-neg'}`;
+            _0xb.onclick=()=>{document.querySelectorAll('.btn-action').forEach(_0xx=>_0xx.classList.remove('btn-selected'));_0xb.classList.add('btn-selected');_0xas.value=_0xk};
+            _0xcont.appendChild(_0xb)
+        });
+
+        function _0xup(){
+            _0xps.innerHTML='<option value="" disabled selected>SELECCIONAR ATLETA</option>';
+            _0x55x.sort((a,b)=>a.number-b.number).forEach(_0xp=>{
+                let _0xo=document.createElement('option');
+                _0xo.value=_0xp.number;_0xo.textContent=`#${_0xp.number} - ${_0xp.name}`;
+                _0xps.appendChild(_0xo)
+            })
+        }
+
+        _0x1a9b(_0x4d2e[15]).onclick=()=>{
+            let _0xn=parseInt(_0x1a9b(_0x4d2e[16]).value),_0xm=_0x1a9b(_0x4d2e[17]).value;
+            if(_0xn&&_0xm){_0x55x.push({number:_0xn,name:_0xm});_0xsv();_0xup();_0xrd();_0x1a9b(_0x4d2e[16]).value='';_0x1a9b(_0x4d2e[17]).value='';_0xmsg('¡ATLETA AGREGADO!')}
+        };
+
+        _0x1a9b(_0x4d2e[18]).onsubmit=_0xe=>{
+            _0xe.preventDefault();
+            if(_0xps.value&&_0xas.value){
+                let _0xl={playerNumber:parseInt(_0xps.value),action:_0xas.value};
+                _0x11z.push(_0xl);_0x99k.push(_0xl);_0xsv();_0xrd();_0xmsg('REGISTRADO');
+                document.querySelectorAll('.btn-action').forEach(_0xx=>_0xx.classList.remove('btn-selected'));_0xas.value=""
+            }else{_0xmsg('Falta Atleta o Acción')}
+        };
+
+        _0x1a9b(_0x4d2e[19]).onclick=()=>{if(confirm('¿Limpiar puntos del set?')){_0x99k=[];_0xsv();_0xrd()}};
+        _0x1a9b(_0x4d2e[20]).onclick=()=>{if(confirm('¿BORRAR TODO EL JUEGO?')){localStorage.clear();location.href="index.html"}};
+
+        _0xup();_0xrd()
+    })
+})()
 </script>
 </body>
 </html>
