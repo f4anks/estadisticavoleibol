@@ -43,7 +43,7 @@
                 <input type="hidden" id="as">
                 <button class="btn-intense w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-blue-200 mt-2">Registrar Acción</button>
                 <div class="grid grid-cols-2 gap-4 mt-2">
-                    <button type="button" id="rs" class="btn-intense bg-emerald-600 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-emerald-100">Cerrar Set</button>
+                    <button type="button" id="rs" class="btn-intense bg-amber-500 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-amber-100">Limpiar Set</button>
                     <button type="button" id="ra" class="btn-intense bg-red-600 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-red-100">Borrar Todo</button>
                 </div>
             </form>
@@ -93,7 +93,7 @@
         localStorage.setItem(_0x4d2e[6],JSON.stringify(_0x55x));
         localStorage.setItem(_0x4d2e[7],JSON.stringify(_0x11z));
         localStorage.setItem(_0x4d2e[8],JSON.stringify(_0x99k));
-        localStorage.setItem('vS_History',JSON.stringify(historySets));
+        localStorage.setItem('vS_History',JSON.stringify(historySets))
     }
 
     function _0xrd(){
@@ -118,7 +118,6 @@
         if(typeof Chart==='undefined')return;
         const _0xc1=_0x1a9b(_0x4d2e[10]).getContext('2d'),_0xc2=_0x1a9b(_0x4d2e[11]).getContext('2d'),_0xlst=Object.values(_0xlbl);
         let _0xv1={p:[],n:[]},_0xv2={p:[],n:[]},_0xtp=0,_0xtn=0;
-        
         Object.keys(_0xlbl).forEach(_0xk=>{
             let _0xp=0,_0xn=0,_0xap=0,_0xan=0;
             _0x99k.forEach(_0xz=>{if(_0xz.action.charAt(_0xz.action.length-2)===_0xk)_0xdict[_0xz.action]>0?_0xp++:_0xn++});
@@ -127,53 +126,25 @@
         });
 
         if(_0xbb1)_0xbb1.destroy();
-        _0xbb1=new Chart(_0xc1,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv1.p,backgroundColor:_0xclr.b,borderRadius:8},{label:'-',data:_0xv1.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'SET EN CURSO',font:{weight:'900',size:14}}}}});
-        
+        _0xbb1=new Chart(_0xc1,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv1.p,backgroundColor:_0xclr.b,borderRadius:8},{label:'-',data:_0xv1.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'SET ACTUAL',font:{weight:'900',size:14}}}}});
         _0x1a9b(_0x4d2e[12]).innerHTML=`POS: ${_0xtp} | NEG: ${_0xtn} | TOTAL: ${_0xtp+_0xtn}`;
         if(_0xbb2)_0xbb2.destroy();
         _0xbb2=new Chart(_0xc2,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv2.p,backgroundColor:_0xclr.g,borderRadius:8},{label:'-',data:_0xv2.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'PARTIDO COMPLETO',font:{weight:'900',size:14}}}}});
 
-        // RENDERIZAR HISTÓRIAL DE SETS FIJOS ABAJO
-        renderHistoryCharts(_0xlst);
-    }
-
-    function renderHistoryCharts(_0xlst) {
-        const historyContainer = _0x1a9b('setHistoryContainer');
-        historyContainer.innerHTML = '';
-
-        historySets.forEach((setData, index) => {
-            const setNum = index + 1;
-            const card = document.createElement('div');
-            card.className = 'card p-4 h-72';
-            
-            const canvas = document.createElement('canvas');
-            canvas.id = 'c-history-' + setNum;
-            card.appendChild(canvas);
-            historyContainer.appendChild(card);
-
-            let _0xsetPos = [], _0xsetNeg = [];
-            Object.keys(_0xlbl).forEach(_0xk => {
-                let _0xp = 0, _0xn = 0;
-                setData.forEach(_0xz => {
-                    if(_0xz.action.charAt(_0xz.action.length-2) === _0xk) {
-                        _0xdict[_0xz.action] > 0 ? _0xp++ : _0xn++;
-                    }
-                });
-                _0xsetPos.push(_0xp);
-                _0xsetNeg.push(_0xn);
+        // Pintar de forma limpia las gráficas archivadas abajo sin alterar nada superior
+        const _0xhistCont=_0x1a9b('setHistoryContainer');_0xhistCont.innerHTML='';
+        historySets.forEach((_0xsetData,_0xidx)=>{
+            const _0xsetNum=_0xidx+1;
+            const _0xcard=document.createElement('div');_0xcard.className='card p-4 h-72';
+            const _0xcanv=document.createElement('canvas');_0xcard.appendChild(_0xcanv);
+            _0xhistCont.appendChild(_0xcard);
+            let _0xhP=[],_0xhN=[];
+            Object.keys(_0xlbl).forEach(_0xk=>{
+                let _0xp=0,_0xn=0;
+                _0xsetData.forEach(_0xz=>{if(_0xz.action.charAt(_0xz.action.length-2)===_0xk)_0xdict[_0xz.action]>0?_0xp++:_0xn++});
+                _0xhP.push(_0xp);_0xhN.push(_0xn)
             });
-
-            new Chart(canvas.getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: _0xlst,
-                    datasets: [
-                        {label: '+', data: _0xsetPos, backgroundColor: _0xclr.b, borderRadius: 8},
-                        {label: '-', data: _0xsetNeg, backgroundColor: _0xclr.o, borderRadius: 8}
-                    ]
-                },
-                options: {..._0xcfg, plugins: {title: {display: 1, text: 'RENDIMIENTO FINAL - SET ' + setNum, font: {weight: '900', size: 14}}}}
-            });
+            new Chart(_0xcanv.getContext('2d'),{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xhP,backgroundColor:_0xclr.b,borderRadius:8},{label:'-',data:_0xhN,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'RENDIMIENTO - SET '+_0xsetNum,font:{weight:'900',size:14}}}}})
         });
     }
 
@@ -182,7 +153,6 @@
         _0x11z=JSON.parse(localStorage.getItem(_0x4d2e[7])||'[]');
         _0x99k=JSON.parse(localStorage.getItem(_0x4d2e[8])||'[]');
         historySets=JSON.parse(localStorage.getItem('vS_History')||'[]');
-        
         const _0xps=_0x1a9b(_0x4d2e[13]),_0xas=_0x1a9b(_0x4d2e[14]),_0xcont=_0x1a9b('actionContainer');
         
         Object.keys(_0xdict).forEach(_0xk=>{
@@ -210,4 +180,30 @@
         };
 
         _0x1a9b(_0x4d2e[18]).onsubmit=_0xe=>{
-            _0xe.
+            _0xe.preventDefault();
+            if(_0xps.value&&_0xas.value){
+                let _0xl={playerNumber:parseInt(_0xps.value),action:_0xas.value};
+                _0x11z.push(_0xl);_0x99k.push(_0xl);_0xsv();_0xrd();_0xmsg('REGISTRADO');
+                document.querySelectorAll('.btn-action').forEach(_0xx=>_0xx.classList.remove('btn-selected'));_0xas.value=""
+            }else{_0xmsg('Falta Atleta o Acción')}
+        };
+
+        _0x1a9b(_0x4d2e[19]).onclick=()=>{
+            if(_0x99k.length>0){
+                if(confirm('¿Cerrar set actual y fijarlo abajo?')){
+                    historySets.push([..._0x99k]);
+                    _0x99k=[];_0xsv();_0xrd();_0xmsg('¡SET ARCHIVADO ABAJO!')
+                }
+            }else{
+                if(confirm('¿Limpiar puntos del set?')){_0x99k=[];_0xsv();_0xrd()}
+            }
+        };
+        
+        _0x1a9b(_0x4d2e[20]).onclick=()=>{if(confirm('¿BORRAR TODO EL JUEGO?')){localStorage.clear();location.href="index_menu.html"}};
+
+        _0xup();_0xrd()
+    })
+})()
+</script>
+</body>
+</html>
