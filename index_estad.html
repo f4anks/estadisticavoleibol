@@ -6,13 +6,12 @@
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" href="./img/logo.png">
     <link rel="apple-touch-icon" href="./img/logo.png">
-    <title>Voley Stats - Estadísticas Pro</title>
+    <title>Voley Stats - Dashboard Pro</title>
     <script src="./libs/tailwind.js"></script>
     <script src="./libs/charts.js"></script>
     <style>
         :root{--b:#0056FF}body{font-family:'Inter',system-ui,sans-serif;-webkit-user-select:none;user-select:none;background:#F3F4F6}.card{background:#fff;border-radius:1.5rem;box-shadow:0 4px 20px -2px rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.05)}.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:1rem 2rem;border-radius:1rem;opacity:0;transition:opacity .3s;z-index:9999}.v{opacity:1}.app-input{background:#fff;border:2px solid #E5E7EB;padding:.8rem;border-radius:1rem;transition:all .2s;font-weight:600}.app-input:focus{border-color:var(--b);outline:0;box-shadow:0 0 0 2px rgba(0,86,255,0.2)}.btn-intense{transition:all .1s;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.1))}.btn-intense:active{transform:scale(0.96);filter:brightness(0.9)}.action-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}.btn-action{padding:.75rem .5rem;border-radius:.75rem;font-size:11px;font-weight:800;text-align:center;border:2px solid transparent;transition:all .2s;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;line-height:1.2}.btn-pos{background-color:#DBEAFE;color:#1E40AF;border-color:#BFDBFE}.btn-neg{background-color:#FEE2E2;color:#991B1B;border-color:#FECACA}.btn-selected{border-color:#000!important;transform:scale(1.03);box-shadow:0 4px 10px rgba(0,0,0,0.1)}
-        .tab-btn{transition:all 0.2s;font-weight:900;text-transform:uppercase;font-size:11px;letter-spacing:0.05em}
-        .tab-active{background-color:#0056FF!important;color:white!important;box-shadow:0 4px 12px rgba(0,86,255,0.3)}
+        .chart-container{height:260px;position:relative}
     </style>
 </head>
 <body class="p-4 pb-12 text-gray-800" oncontextmenu="return false">
@@ -49,32 +48,34 @@
                 <button class="btn-intense w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-blue-200 mt-2">Registrar Acción</button>
                 
                 <div class="grid grid-cols-2 gap-4 mt-2">
-                    <button type="button" id="cSet" class="btn-intense bg-emerald-600 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-emerald-100">Fijar / Cerrar Set</button>
+                    <button type="button" id="nextSet" class="btn-intense bg-emerald-600 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-emerald-100">Siguiente Set</button>
                     <button type="button" id="ra" class="btn-intense bg-red-600 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-red-100">Borrar Todo</button>
                 </div>
             </form>
         </div>
 
-        <div class="grid grid-cols-4 gap-1 bg-gray-200 p-1.5 rounded-2xl">
-            <button id="t-all" class="tab-btn py-2.5 rounded-xl bg-white text-gray-700 tab-active">Total</button>
-            <button id="t-1" class="tab-btn py-2.5 rounded-xl bg-white text-gray-400">Set 1</button>
-            <button id="t-2" class="tab-btn py-2.5 rounded-xl bg-white text-gray-400">Set 2</button>
-            <button id="t-3" class="tab-btn py-2.5 rounded-xl bg-white text-gray-400">Set 3</button>
-        </div>
-
         <div class="card p-6">
-            <h2 id="resumenTitle" class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Resumen de Efectividad (General)</h2>
+            <h2 class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Efectividad Acumulada del Partido</h2>
             <div id="st" class="space-y-3 max-h-72 overflow-y-auto"></div>
         </div>
 
-        <div class="card p-4 h-72"><canvas id="c1"></canvas></div>
-        <div class="card p-4 h-96">
-            <div id="sum" class="text-center mb-4 text-xs font-black text-white bg-blue-600 py-3 rounded-xl shadow-inner uppercase"></div>
-            <canvas id="c2"></canvas>
+        <div class="space-y-4">
+            <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400 text-center my-6">— DASHBOARD DE GRÁFICAS EN TIEMPO REAL —</h3>
+            
+            <div class="card p-4">
+                <div id="sum" class="text-center mb-3 text-xs font-black text-white bg-blue-600 py-2.5 rounded-xl uppercase"></div>
+                <div class="chart-container"><canvas id="c-all"></canvas></div>
+            </div>
+
+            <div class="card p-4"><div class="chart-container"><canvas id="c-1"></canvas></div></div>
+            <div class="card p-4"><div class="chart-container"><canvas id="c-2"></canvas></div></div>
+            <div class="card p-4"><div class="chart-container"><canvas id="c-3"></canvas></div></div>
+            <div class="card p-4"><div class="chart-container"><canvas id="c-4"></canvas></div></div>
+            <div class="card p-4"><div class="chart-container"><canvas id="c-5"></canvas></div></div>
         </div>
     </main>
 
-    <footer class="mt-8 mb-4 text-center">
+    <footer class="mt-12 mb-6 text-center">
         <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Programación y Desarrollo: Sistematikos - Frank Hernandez</p>
     </footer>
 
@@ -87,15 +88,15 @@
         if(e.keyCode==123||(e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74))||(e.ctrlKey&&e.keyCode==85)){e.preventDefault();return false}
     });
 
-    // Estado del Juego Estructurado por Sets
-    let athletes=[], currentSet=1, activeTab='all';
-    let setLogs={ 1:[], 2:[], 3:[] };
+    let athletes=[], currentSet=1;
+    let setLogs={ 1:[], 2:[], 3:[], 4:[], 5:[] };
 
     const actionsDict={'Servicio Bueno S#':1,'Ataque Bueno A#':1,'Bloqueo Bueno B#':1,'Coloque Bueno C#':1,'Defensa Bueno D#':1,'Recepcion Bueno R#':1,'Servicio Malo S=':-1,'Ataque Malo A=':-1,'Bloqueo Malo B=':-1,'Recepcion Malo R=':-1,'Coloque Malo C=':-1,'Defensa Malo D=':-1};
     const categories={S:'Servicio',A:'Ataque',B:'Bloqueo',R:'Recepcion',C:'Coloque',D:'Defensa'};
     const colors={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},chartConfig={responsive:1,maintainAspectRatio:0,scales:{y:{ticks:{stepSize:1,font:{weight:'bold'}}}}};
     
-    let chart1=null, chart2=null;
+    // Almacén de instancias de Charts individuales
+    let chartInstances={ all:null, 1:null, 2:null, 3:null, 4:null, 5:null };
 
     function showToast(msg){
         const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);
@@ -105,37 +106,42 @@
 
     function saveData(){
         localStorage.setItem('vP',JSON.stringify(athletes));
-        localStorage.setItem('vS_Logs',JSON.stringify(setLogs));
-        localStorage.setItem('vS_Current',JSON.stringify(currentSet));
+        localStorage.setItem('vS_Logs_v5',JSON.stringify(setLogs));
+        localStorage.setItem('vS_Current_v5',JSON.stringify(currentSet));
     }
 
     function loadData(){
         athletes=JSON.parse(localStorage.getItem('vP')||'[]');
-        setLogs=JSON.parse(localStorage.getItem('vS_Logs')||'{"1":[],"2":[],"3":[]}');
-        currentSet=JSON.parse(localStorage.getItem('vS_Current')||'1');
+        setLogs=JSON.parse(localStorage.getItem('vS_Logs_v5')||'{"1":[],"2":[],"3":[],"4":[],"5":[]}');
+        currentSet=JSON.parse(localStorage.getItem('vS_Current_v5')||'1');
         _0x1a9b('setIndicator').textContent=`SET ${currentSet}`;
     }
 
-    function renderAll(){
+    function buildChart(ctx, title, posData, negData, colorPos, isGeneral=false){
+        return new Chart(ctx,{
+            type:'bar',
+            data:{
+                labels:Object.values(categories),
+                datasets:[
+                    {label: isGeneral ? 'TOTAL +' : '+', data:posData, backgroundColor:colorPos, borderRadius:6},
+                    {label: isGeneral ? 'TOTAL -' : '-', data:negData, backgroundColor:colors.o, borderRadius:6}
+                ]
+            },
+            options:{...chartConfig,plugins:{title:{display:1,text:title,font:{weight:'900',size:13}}}}
+        });
+    }
+
+    function renderChartsAndStats(){
         const container=_0x1a9b('st');container.innerHTML='';
-        
-        // Determinar qué logs procesar según la pestaña activa
-        let targetLogs=[];
-        if(activeTab==='all'){
-            targetLogs=[...setLogs[1], ...setLogs[2], ...setLogs[3]];
-            _0x1a9b('resumenTitle').textContent="Resumen de Efectividad (Partido Completo)";
-        } else {
-            targetLogs=setLogs[activeTab]||[];
-            _0x1a9b('resumenTitle').textContent=`Resumen de Efectividad (Set ${activeTab})`;
-        }
+        const allLogs=[...setLogs[1], ...setLogs[2], ...setLogs[3], ...setLogs[4], ...setLogs[5]];
 
         if(!athletes.length){container.innerHTML='<p class="text-center text-gray-400 py-4 italic">Sin datos</p>';return}
 
-        // Procesar matriz de rendimientos
+        // 1. Resumen de texto de Atletas (Acumulado General)
         let metrics={};
         athletes.forEach(p=>metrics[p.number]={p:0,n:0,actions:{}});
 
-        targetLogs.forEach(log=>{
+        allLogs.forEach(log=>{
             let m=metrics[log.playerNumber];
             if(m){
                 let val=actionsDict[log.action], type=log.action.charAt(log.action.length-2);
@@ -151,44 +157,51 @@
             container.innerHTML+=`<div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 shadow-sm"><div class="flex justify-between items-center font-black text-sm mb-2"><span>#${p.number} ${p.name}</span><span class="text-blue-600 bg-white px-3 py-1 rounded-full shadow-sm">DIF: ${m.p-m.n}</span></div><div class="text-[10px] font-bold flex flex-wrap gap-1">${breakdown||'<span class="text-gray-400 italic">Sin acciones</span>'}</div></div>`;
         });
 
-        // Actualizar Gráficas de Barras Integradas
         if(typeof Chart==='undefined')return;
 
-        const ctx1=_0x1a9b('c1').getContext('2d'), ctx2=_0x1a9b('c2').getContext('2d'), labelsList=Object.values(categories);
-        let currentChartData={p:[],n:[]}, totalChartData={p:[],n:[]}, totP=0, totN=0;
+        // 2. Procesamiento de datos para los 6 gráficos simultáneos
+        let totalPos=0, totalNeg=0;
+        let dataSetsStructure={
+            all: {p:[], n:[]}, 1: {p:[], n:[]}, 2: {p:[], n:[]}, 3: {p:[], n:[]}, 4: {p:[], n:[]}, 5: {p:[], n:[]}
+        };
 
         Object.keys(categories).forEach(k=>{
-            let cp=0, cn=0, tp=0, tn=0;
-            
-            // Datos del Set/Pestaña seleccionada
-            targetLogs.forEach(z=>{
-                if(z.action.charAt(z.action.length-2)===k)actionsDict[z.action]>0?cp++:cn++;
+            // Mapeo por Set Individual
+            [1,2,3,4,5].forEach(sId=>{
+                let sp=0, sn=0;
+                setLogs[sId].forEach(z=>{
+                    if(z.action.charAt(z.action.length-2)===k) actionsDict[z.action]>0?sp++:sn++;
+                });
+                dataSetsStructure[sId].p.push(sp);
+                dataSetsStructure[sId].n.push(sn);
             });
-            // Datos Consolidados del Partido General
-            [...setLogs[1], ...setLogs[2], ...setLogs[3]].forEach(z=>{
+
+            // Mapeo Acumulado General (Total)
+            let ap=0, an=0;
+            allLogs.forEach(z=>{
                 if(z.action.charAt(z.action.length-2)===k){
-                    if(actionsDict[z.action]>0){tp++;totP++}else{tn++;totN++}
+                    if(actionsDict[z.action]>0){ap++; totalPos++}else{an++; totalNeg++}
                 }
             });
-
-            currentChartData.p.push(cp);currentChartData.n.push(cn);
-            totalChartData.p.push(tp);totalChartData.n.push(tn);
+            dataSetsStructure.all.p.push(ap);
+            dataSetsStructure.all.n.push(an);
         });
 
-        if(chart1)chart1.destroy();
-        chart1=new Chart(ctx1,{type:'bar',data:{labels:labelsList,datasets:[{label:'+',data:currentChartData.p,backgroundColor:colors.b,borderRadius:8},{label:'-',data:currentChartData.n,backgroundColor:colors.o,borderRadius:8}]},options:{...chartConfig,plugins:{title:{display:1,text:(activeTab==='all'?'PARTIDO COMPLETO':'SET '+activeTab),font:{weight:'900',size:14}}}}});
+        // 3. Renderizado/Destrucción controlada de cada gráfica fija
+        if(chartInstances.all) chartInstances.all.destroy();
+        chartInstances.all = buildChart(_0x1a9b('c-all').getContext('2d'), 'BALANCE COMPLETO DEL PARTIDO', dataSetsStructure.all.p, dataSetsStructure.all.n, colors.g, true);
+        _0x1a9b('sum').innerHTML=`GLOBAL - POS: ${totalPos} | NEG: ${totalNeg} | TOTAL: ${totalPos+totalNeg}`;
 
-        _0x1a9b('sum').innerHTML=`POS: ${totP} | NEG: ${totN} | TOTAL: ${totP+totN}`;
-        
-        if(chart2)chart2.destroy();
-        chart2=new Chart(ctx2,{type:'bar',data:{labels:labelsList,datasets:[{label:'TOTAL +',data:totalChartData.p,backgroundColor:colors.g,borderRadius:8},{label:'TOTAL -',data:totalChartData.n,backgroundColor:colors.o,borderRadius:8}]},options:{...chartConfig,plugins:{title:{display:1,text:'BALANCE GENERAL DEL PARTIDO',font:{weight:'900',size:14}}}}});
+        [1,2,3,4,5].forEach(sId=>{
+            if(chartInstances[sId]) chartInstances[sId].destroy();
+            chartInstances[sId] = buildChart(_0x1a9b(`c-${sId}`).getContext('2d'), `RENDIMIENTO - SET ${sId}`, dataSetsStructure[sId].p, dataSetsStructure[sId].n, colors.b, false);
+        });
     }
 
-    document.addEventListener('DOMContentLoaded', RhineVoley=>{
+    document.addEventListener('DOMContentLoaded', ()=>{
         loadData();
         const selectMenu=_0x1a9b('ps'), actionInput=_0x1a9b('as'), actionsGrid=_0x1a9b('actionContainer');
         
-        // Generar Botones de Control
         Object.keys(actionsDict).forEach(k=>{
             const b=document.createElement('div');
             const isPos=actionsDict[k]>0, splitText=k.split(' ');
@@ -206,23 +219,11 @@
             });
         }
 
-        // Manejo de Filtros por Pestaña
-        const tabButtons={ 'all':_0x1a9b('t-all'), '1':_0x1a9b('t-1'), '2':_0x1a9b('t-2'), '3':_0x1a9b('t-3') };
-        Object.keys(tabButtons).forEach(key=>{
-            tabButtons[key].onclick=()=>{
-                Object.values(tabButtons).forEach(b=>b.classList.remove('tab-active'));
-                tabButtons[key].classList.add('tab-active');
-                activeTab=key;
-                renderAll();
-            };
-        });
-
-        // Acciones CRUD
         _0x1a9b('add').onclick=()=>{
             let num=parseInt(_0x1a9b('pN').value), name=_0x1a9b('pM').value;
             if(num&&name){
                 athletes.push({number:num,name:name});
-                saveData();updateDropdown();renderAll();
+                saveData();updateDropdown();renderChartsAndStats();
                 _0x1a9b('pN').value='';_0x1a9b('pM').value='';
                 showToast('¡ATLETA REGISTRADO!');
             }
@@ -233,35 +234,34 @@
             if(selectMenu.value&&actionInput.value){
                 let log={playerNumber:parseInt(selectMenu.value),action:actionInput.value};
                 setLogs[currentSet].push(log);
-                saveData();renderAll();showToast('PUNTO REGISTRADO');
+                saveData();renderChartsAndStats();showToast('PUNTO REGISTRADO');
                 document.querySelectorAll('.btn-action').forEach(x=>x.classList.remove('btn-selected'));actionInput.value="";
             }else{showToast('Seleccione Atleta y Acción')}
         };
 
-        // Fijar y avanzar de Set
-        _0x1a9b('cSet').onclick=()=>{
-            if(confirm(`¿Estás seguro de cerrar y guardar de forma fija el SET ${currentSet}?`)){
-                if(currentSet < 3){
+        // Avanzar de set de forma controlada hasta el Set 5
+        _0x1a9b('nextSet').onclick=()=>{
+            if(confirm(`¿Deseas cerrar el SET ${currentSet} e iniciar el siguiente?`)){
+                if(currentSet < 5){
                     currentSet++;
                     _0x1a9b('setIndicator').textContent=`SET ${currentSet}`;
                     saveData();
-                    // Cambiar el foco visual al set entrante de forma automática
-                    tabButtons[currentSet].click();
-                    showToast(`SET ${currentSet-1} ARCHIVADO. ¡INICIA EL SET ${currentSet}!`);
+                    renderChartsAndStats();
+                    showToast(`SET ${currentSet-1} FIJADO. ENTRANDO AL SET ${currentSet}`);
                 }else{
-                    showToast('¡Límite de 3 Sets alcanzado para este juego!');
+                    showToast('¡Has alcanzado el límite máximo de 5 Sets!');
                 }
             }
         };
 
         _0x1a9b('ra').onclick=()=>{
-            if(confirm('¿Deseas resetear por completo el juego actual? Se borrarán todos los sets.')){
+            if(confirm('¿Deseas resetear por completo el juego actual? Se borrarán los 5 sets.')){
                 localStorage.clear();
                 location.href="index_menu.html";
             }
         };
 
-        updateDropdown();renderAll();
+        updateDropdown();renderChartsAndStats();
     });
 })();
 </script>
