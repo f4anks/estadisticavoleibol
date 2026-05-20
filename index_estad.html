@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
     <link rel="manifest" href="./manifest.json">
     <link rel="icon" type="image/png" href="./img/logo.png">
     <link rel="apple-touch-icon" href="./img/logo.png">
@@ -11,6 +11,8 @@
     <script src="./libs/charts.js"></script>
     <style>
         :root{--b:#0056FF}body{font-family:'Inter',system-ui,sans-serif;-webkit-user-select:none;user-select:none;background:#F3F4F6}.card{background:#fff;border-radius:1.5rem;box-shadow:0 4px 20px -2px rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.05)}.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:1rem 2rem;border-radius:1rem;opacity:0;transition:opacity .3s;z-index:9999}.v{opacity:1}.app-input{background:#fff;border:2px solid #E5E7EB;padding:.8rem;border-radius:1rem;transition:all .2s;font-weight:600}.app-input:focus{border-color:var(--b);outline:0;box-shadow:0 0 0 2px rgba(0,86,255,0.2)}.btn-intense{transition:all .1s;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.1))}.btn-intense:active{transform:scale(0.96);filter:brightness(0.9)}.action-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}.btn-action{padding:.75rem .5rem;border-radius:.75rem;font-size:11px;font-weight:800;text-align:center;border:2px solid transparent;transition:all .2s;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;line-height:1.2}.btn-pos{background-color:#DBEAFE;color:#1E40AF;border-color:#BFDBFE}.btn-neg{background-color:#FEE2E2;color:#991B1B;border-color:#FECACA}.btn-selected{border-color:#000!important;transform:scale(1.03);box-shadow:0 4px 10px rgba(0,0,0,0.1)}
+        .tab-btn{transition:all 0.2s;font-weight:900;text-transform:uppercase;font-size:11px;letter-spacing:0.05em}
+        .tab-active{background-color:#0056FF!important;color:white!important;box-shadow:0 4px 12px rgba(0,86,255,0.3)}
     </style>
 </head>
 <body class="p-4 pb-12 text-gray-800" oncontextmenu="return false">
@@ -36,21 +38,32 @@
         </div>
 
         <div class="card p-6 border-t-4 border-blue-600">
-            <h2 class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Toma de Datos</h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xs font-black uppercase tracking-widest text-blue-700">Toma de Datos</h2>
+                <span id="setIndicator" class="bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">SET 1</span>
+            </div>
             <form id="f" class="space-y-4">
                 <select id="ps" class="w-full app-input text-gray-900 shadow-sm font-bold uppercase"></select>
                 <div id="actionContainer" class="action-grid"></div>
                 <input type="hidden" id="as">
                 <button class="btn-intense w-full bg-blue-600 text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-blue-200 mt-2">Registrar Acción</button>
+                
                 <div class="grid grid-cols-2 gap-4 mt-2">
-                    <button type="button" id="rs" class="btn-intense bg-amber-500 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-amber-100">Limpiar Set</button>
+                    <button type="button" id="cSet" class="btn-intense bg-emerald-600 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-emerald-100">Fijar / Cerrar Set</button>
                     <button type="button" id="ra" class="btn-intense bg-red-600 text-white py-4 rounded-2xl text-xs font-black uppercase shadow-lg shadow-red-100">Borrar Todo</button>
                 </div>
             </form>
         </div>
 
+        <div class="grid grid-cols-4 gap-1 bg-gray-200 p-1.5 rounded-2xl">
+            <button id="t-all" class="tab-btn py-2.5 rounded-xl bg-white text-gray-700 tab-active">Total</button>
+            <button id="t-1" class="tab-btn py-2.5 rounded-xl bg-white text-gray-400">Set 1</button>
+            <button id="t-2" class="tab-btn py-2.5 rounded-xl bg-white text-gray-400">Set 2</button>
+            <button id="t-3" class="tab-btn py-2.5 rounded-xl bg-white text-gray-400">Set 3</button>
+        </div>
+
         <div class="card p-6">
-            <h2 class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Resumen de Efectividad</h2>
+            <h2 id="resumenTitle" class="text-xs font-black uppercase tracking-widest text-blue-700 mb-4 text-center">Resumen de Efectividad (General)</h2>
             <div id="st" class="space-y-3 max-h-72 overflow-y-auto"></div>
         </div>
 
@@ -67,112 +80,190 @@
 
 <script>
 (function(){
-    const _0x4d2e=['keydown','keyCode','ctrlKey','shiftKey','preventDefault','DOMContentLoaded','vP','vM','vS','st','c1','c2','sum','ps','as','add','pN','pM','f','rs','ra'];
     const _0x1a9b=(id)=>document.getElementById(id);
 
-    // Protección de código Sistematikos (Mouse y Teclas)
-    document.addEventListener(_0x4d2e[0],function(_0xe){
-        if(_0xe[_0x4d2e[1]]==123||(_0xe[_0x4d2e[2]]&&_0xe[_0x4d2e[3]]&&(_0xe[_0x4d2e[1]]==73||_0xe[_0x4d2e[1]]==74))||(_0xe[_0x4d2e[2]]&&_0xe[_0x4d2e[1]]==85)){_0xe[_0x4d2e[4]]();return false}
+    // Seguridad Estricta Sistematikos
+    document.addEventListener('keydown',function(e){
+        if(e.keyCode==123||(e.ctrlKey&&e.shiftKey&&(e.keyCode==73||e.keyCode==74))||(e.ctrlKey&&e.keyCode==85)){e.preventDefault();return false}
     });
 
-    let _0x55x=[],_0x11z=[],_0x99k=[],_0xbb1=null,_0xbb2=null;
-    const _0xdict={'Servicio Bueno S#':1,'Ataque Bueno A#':1,'Bloqueo Bueno B#':1,'Coloque Bueno C#':1,'Defensa Bueno D#':1,'Recepcion Bueno R#':1,'Servicio Malo S=':-1,'Ataque Malo A=':-1,'Bloqueo Malo B=':-1,'Recepcion Malo R=':-1,'Coloque Malo C=':-1,'Defensa Malo D=':-1};
-    const _0xlbl={S:'Servicio',A:'Ataque',B:'Bloqueo',R:'Recepcion',C:'Coloque',D:'Defensa'};
-    const _0xclr={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},_0xcfg={scales:{y:{ticks:{stepSize:1,font:{weight:'bold'}}}},responsive:1,maintainAspectRatio:0};
+    // Estado del Juego Estructurado por Sets
+    let athletes=[], currentSet=1, activeTab='all';
+    let setLogs={ 1:[], 2:[], 3:[] };
 
-    function _0xmsg(_0xm){
-        const _0xt=document.createElement('div');_0xt.className='toast';_0xt.textContent=_0xm;document.body.appendChild(_0xt);
-        setTimeout(()=>_0xt.classList.add('v'),10);
-        setTimeout(()=>{_0xt.classList.remove('v');setTimeout(()=>_0xt.remove(),300)},3000)
+    const actionsDict={'Servicio Bueno S#':1,'Ataque Bueno A#':1,'Bloqueo Bueno B#':1,'Coloque Bueno C#':1,'Defensa Bueno D#':1,'Recepcion Bueno R#':1,'Servicio Malo S=':-1,'Ataque Malo A=':-1,'Bloqueo Malo B=':-1,'Recepcion Malo R=':-1,'Coloque Malo C=':-1,'Defensa Malo D=':-1};
+    const categories={S:'Servicio',A:'Ataque',B:'Bloqueo',R:'Recepcion',C:'Coloque',D:'Defensa'};
+    const colors={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},chartConfig={responsive:1,maintainAspectRatio:0,scales:{y:{ticks:{stepSize:1,font:{weight:'bold'}}}}};
+    
+    let chart1=null, chart2=null;
+
+    function showToast(msg){
+        const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);
+        setTimeout(()=>t.classList.add('v'),10);
+        setTimeout(()=>{t.classList.remove('v');setTimeout(()=>t.remove(),300)},2000);
     }
 
-    function _0xsv(){
-        localStorage.setItem(_0x4d2e[6],JSON.stringify(_0x55x));
-        localStorage.setItem(_0x4d2e[7],JSON.stringify(_0x11z));
-        localStorage.setItem(_0x4d2e[8],JSON.stringify(_0x99k))
+    function saveData(){
+        localStorage.setItem('vP',JSON.stringify(athletes));
+        localStorage.setItem('vS_Logs',JSON.stringify(setLogs));
+        localStorage.setItem('vS_Current',JSON.stringify(currentSet));
     }
 
-    function _0xrd(){
-        const _0xs=_0x1a9b(_0x4d2e[9]);_0xs.innerHTML='';
-        if(!_0x55x.length){_0xs.innerHTML='<p class="text-center text-gray-400 py-4 italic">Sin datos</p>';return}
-        let _0xd={};_0x55x.forEach(_0xp=>_0xd[_0xp.number]={p:0,n:0,a:{}});
-        _0x99k.forEach(_0xl=>{
-            let _0xk=_0xd[_0xl.playerNumber];
-            if(_0xk){
-                let _0xv=_0xdict[_0xl.action],_0xt=_0xl.action.charAt(_0xl.action.length-2);
-                _0xv>0?_0xk.p++:_0xk.n++;
-                if(!_0xk.a[_0xt])_0xk.a[_0xt]={p:0,n:0};
-                _0xv>0?_0xk.a[_0xt].p++:_0xk.a[_0xt].n++
-            }
-        });
-        _0x55x.forEach(_0xp=>{
-            let _0xk=_0xd[_0xp.number],_0xst='';
-            Object.keys(_0xk.a).forEach(_0xx=>_0xst+=`<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">${_0xx}:${_0xk.a[_0xx].p}|${_0xk.a[_0xx].n}</span> `);
-            _0xs.innerHTML+=`<div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 shadow-sm"><div class="flex justify-between items-center font-black text-sm mb-2"><span>#${_0xp.number} ${_0xp.name}</span><span class="text-blue-600 bg-white px-3 py-1 rounded-full shadow-sm">DIF: ${_0xk.p-_0xk.n}</span></div><div class="text-[10px] font-bold flex flex-wrap gap-1">${_0xst}</div></div>`
-        });
-
-        if(typeof Chart==='undefined')return;
-        const _0xc1=_0x1a9b(_0x4d2e[10]).getContext('2d'),_0xc2=_0x1a9b(_0x4d2e[11]).getContext('2d'),_0xlst=Object.values(_0xlbl);
-        let _0xv1={p:[],n:[]},_0xv2={p:[],n:[]},_0xtp=0,_0xtn=0;
-        Object.keys(_0xlbl).forEach(_0xk=>{
-            let _0xp=0,_0xn=0,_0xap=0,_0xan=0;
-            _0x99k.forEach(_0xz=>{if(_0xz.action.charAt(_0xz.action.length-2)===_0xk)_0xdict[_0xz.action]>0?_0xp++:_0xn++});
-            _0x11z.forEach(_0xz=>{if(_0xz.action.charAt(_0xz.action.length-2)===_0xk){if(_0xdict[_0xz.action]>0){_0xap++;_0xtp++}else{_0xan++;_0xtn++}}});
-            _0xv1.p.push(_0xp);_0xv1.n.push(_0xn);_0xv2.p.push(_0xap);_0xv2.n.push(_0xan)
-        });
-
-        if(_0xbb1)_0xbb1.destroy();
-        _0xbb1=new Chart(_0xc1,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv1.p,backgroundColor:_0xclr.b,borderRadius:8},{label:'-',data:_0xv1.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'SET ACTUAL',font:{weight:'900',size:14}}}}});
-        _0x1a9b(_0x4d2e[12]).innerHTML=`POS: ${_0xtp} | NEG: ${_0xtn} | TOTAL: ${_0xtp+_0xtn}`;
-        if(_0xbb2)_0xbb2.destroy();
-        _0xbb2=new Chart(_0xc2,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv2.p,backgroundColor:_0xclr.g,borderRadius:8},{label:'-',data:_0xv2.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'PARTIDO COMPLETO',font:{weight:'900',size:14}}}}})
+    function loadData(){
+        athletes=JSON.parse(localStorage.getItem('vP')||'[]');
+        setLogs=JSON.parse(localStorage.getItem('vS_Logs')||'{"1":[],"2":[],"3":[]}');
+        currentSet=JSON.parse(localStorage.getItem('vS_Current')||'1');
+        _0x1a9b('setIndicator').textContent=`SET ${currentSet}`;
     }
 
-    document.addEventListener(_0x4d2e[5],()=>{
-        _0x55x=JSON.parse(localStorage.getItem(_0x4d2e[6])||'[]');
-        _0x11z=JSON.parse(localStorage.getItem(_0x4d2e[7])||'[]');
-        _0x99k=JSON.parse(localStorage.getItem(_0x4d2e[8])||'[]');
-        const _0xps=_0x1a9b(_0x4d2e[13]),_0xas=_0x1a9b(_0x4d2e[14]),_0xcont=_0x1a9b('actionContainer');
+    function renderAll(){
+        const container=_0x1a9b('st');container.innerHTML='';
         
-        Object.keys(_0xdict).forEach(_0xk=>{
-            const _0xb=document.createElement('div');
-            const _0xisp=_0xdict[_0xk]>0;
-            const _0xpt=_0xk.split(' ');
-            _0xb.innerHTML=`<span>${_0xpt[0]}</span><span class="text-lg">${_0xpt[2]}</span>`;
-            _0xb.className=`btn-action ${_0xisp?'btn-pos':'btn-neg'}`;
-            _0xb.onclick=()=>{document.querySelectorAll('.btn-action').forEach(_0xx=>_0xx.classList.remove('btn-selected'));_0xb.classList.add('btn-selected');_0xas.value=_0xk};
-            _0xcont.appendChild(_0xb)
-        });
-
-        function _0xup(){
-            _0xps.innerHTML='<option value="" disabled selected>SELECCIONAR ATLETA</option>';
-            _0x55x.sort((a,b)=>a.number-b.number).forEach(_0xp=>{
-                let _0xo=document.createElement('option');
-                _0xo.value=_0xp.number;_0xo.textContent=`#${_0xp.number} - ${_0xp.name}`;
-                _0xps.appendChild(_0xo)
-            })
+        // Determinar qué logs procesar según la pestaña activa
+        let targetLogs=[];
+        if(activeTab==='all'){
+            targetLogs=[...setLogs[1], ...setLogs[2], ...setLogs[3]];
+            _0x1a9b('resumenTitle').textContent="Resumen de Efectividad (Partido Completo)";
+        } else {
+            targetLogs=setLogs[activeTab]||[];
+            _0x1a9b('resumenTitle').textContent=`Resumen de Efectividad (Set ${activeTab})`;
         }
 
-        _0x1a9b(_0x4d2e[15]).onclick=()=>{
-            let _0xn=parseInt(_0x1a9b(_0x4d2e[16]).value),_0xm=_0x1a9b(_0x4d2e[17]).value;
-            if(_0xn&&_0xm){_0x55x.push({number:_0xn,name:_0xm});_0xsv();_0xup();_0xrd();_0x1a9b(_0x4d2e[16]).value='';_0x1a9b(_0x4d2e[17]).value='';_0xmsg('¡ATLETA AGREGADO!')}
+        if(!athletes.length){container.innerHTML='<p class="text-center text-gray-400 py-4 italic">Sin datos</p>';return}
+
+        // Procesar matriz de rendimientos
+        let metrics={};
+        athletes.forEach(p=>metrics[p.number]={p:0,n:0,actions:{}});
+
+        targetLogs.forEach(log=>{
+            let m=metrics[log.playerNumber];
+            if(m){
+                let val=actionsDict[log.action], type=log.action.charAt(log.action.length-2);
+                val>0?m.p++:m.n++;
+                if(!m.actions[type])m.actions[type]={p:0,n:0};
+                val>0?m.actions[type].p++:m.actions[type].n++;
+            }
+        });
+
+        athletes.forEach(p=>{
+            let m=metrics[p.number], breakdown='';
+            Object.keys(m.actions).forEach(k=>breakdown+=`<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">${k}:${m.actions[k].p}|${m.actions[k].n}</span> `);
+            container.innerHTML+=`<div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 shadow-sm"><div class="flex justify-between items-center font-black text-sm mb-2"><span>#${p.number} ${p.name}</span><span class="text-blue-600 bg-white px-3 py-1 rounded-full shadow-sm">DIF: ${m.p-m.n}</span></div><div class="text-[10px] font-bold flex flex-wrap gap-1">${breakdown||'<span class="text-gray-400 italic">Sin acciones</span>'}</div></div>`;
+        });
+
+        // Actualizar Gráficas de Barras Integradas
+        if(typeof Chart==='undefined')return;
+
+        const ctx1=_0x1a9b('c1').getContext('2d'), ctx2=_0x1a9b('c2').getContext('2d'), labelsList=Object.values(categories);
+        let currentChartData={p:[],n:[]}, totalChartData={p:[],n:[]}, totP=0, totN=0;
+
+        Object.keys(categories).forEach(k=>{
+            let cp=0, cn=0, tp=0, tn=0;
+            
+            // Datos del Set/Pestaña seleccionada
+            targetLogs.forEach(z=>{
+                if(z.action.charAt(z.action.length-2)===k)actionsDict[z.action]>0?cp++:cn++;
+            });
+            // Datos Consolidados del Partido General
+            [...setLogs[1], ...setLogs[2], ...setLogs[3]].forEach(z=>{
+                if(z.action.charAt(z.action.length-2)===k){
+                    if(actionsDict[z.action]>0){tp++;totP++}else{tn++;totN++}
+                }
+            });
+
+            currentChartData.p.push(cp);currentChartData.n.push(cn);
+            totalChartData.p.push(tp);totalChartData.n.push(tn);
+        });
+
+        if(chart1)chart1.destroy();
+        chart1=new Chart(ctx1,{type:'bar',data:{labels:labelsList,datasets:[{label:'+',data:currentChartData.p,backgroundColor:colors.b,borderRadius:8},{label:'-',data:currentChartData.n,backgroundColor:colors.o,borderRadius:8}]},options:{...chartConfig,plugins:{title:{display:1,text:(activeTab==='all'?'PARTIDO COMPLETO':'SET '+activeTab),font:{weight:'900',size:14}}}}});
+
+        _0x1a9b('sum').innerHTML=`POS: ${totP} | NEG: ${totN} | TOTAL: ${totP+totN}`;
+        
+        if(chart2)chart2.destroy();
+        chart2=new Chart(ctx2,{type:'bar',data:{labels:labelsList,datasets:[{label:'TOTAL +',data:totalChartData.p,backgroundColor:colors.g,borderRadius:8},{label:'TOTAL -',data:totalChartData.n,backgroundColor:colors.o,borderRadius:8}]},options:{...chartConfig,plugins:{title:{display:1,text:'BALANCE GENERAL DEL PARTIDO',font:{weight:'900',size:14}}}}});
+    }
+
+    document.addEventListener('DOMContentLoaded', RhineVoley=>{
+        loadData();
+        const selectMenu=_0x1a9b('ps'), actionInput=_0x1a9b('as'), actionsGrid=_0x1a9b('actionContainer');
+        
+        // Generar Botones de Control
+        Object.keys(actionsDict).forEach(k=>{
+            const b=document.createElement('div');
+            const isPos=actionsDict[k]>0, splitText=k.split(' ');
+            b.innerHTML=`<span>${splitText[0]}</span><span class="text-lg">${splitText[2]}</span>`;
+            b.className=`btn-action ${isPos?'btn-pos':'btn-neg'}`;
+            b.onclick=()=>{document.querySelectorAll('.btn-action').forEach(x=>x.classList.remove('btn-selected'));b.classList.add('btn-selected');actionInput.value=k};
+            actionsGrid.appendChild(b);
+        });
+
+        function updateDropdown(){
+            selectMenu.innerHTML='<option value="" disabled selected>SELECCIONAR ATLETA</option>';
+            athletes.sort((a,b)=>a.number-b.number).forEach(p=>{
+                let o=document.createElement('option');o.value=p.number;o.textContent=`#${p.number} - ${p.name}`;
+                selectMenu.appendChild(o);
+            });
+        }
+
+        // Manejo de Filtros por Pestaña
+        const tabButtons={ 'all':_0x1a9b('t-all'), '1':_0x1a9b('t-1'), '2':_0x1a9b('t-2'), '3':_0x1a9b('t-3') };
+        Object.keys(tabButtons).forEach(key=>{
+            tabButtons[key].onclick=()=>{
+                Object.values(tabButtons).forEach(b=>b.classList.remove('tab-active'));
+                tabButtons[key].classList.add('tab-active');
+                activeTab=key;
+                renderAll();
+            };
+        });
+
+        // Acciones CRUD
+        _0x1a9b('add').onclick=()=>{
+            let num=parseInt(_0x1a9b('pN').value), name=_0x1a9b('pM').value;
+            if(num&&name){
+                athletes.push({number:num,name:name});
+                saveData();updateDropdown();renderAll();
+                _0x1a9b('pN').value='';_0x1a9b('pM').value='';
+                showToast('¡ATLETA REGISTRADO!');
+            }
         };
 
-        _0x1a9b(_0x4d2e[18]).onsubmit=_0xe=>{
-            _0xe.preventDefault();
-            if(_0xps.value&&_0xas.value){
-                let _0xl={playerNumber:parseInt(_0xps.value),action:_0xas.value};
-                _0x11z.push(_0xl);_0x99k.push(_0xl);_0xsv();_0xrd();_0xmsg('REGISTRADO');
-                document.querySelectorAll('.btn-action').forEach(_0xx=>_0xx.classList.remove('btn-selected'));_0xas.value=""
-            }else{_0xmsg('Falta Atleta o Acción')}
+        _0x1a9b('f').onsubmit=e=>{
+            e.preventDefault();
+            if(selectMenu.value&&actionInput.value){
+                let log={playerNumber:parseInt(selectMenu.value),action:actionInput.value};
+                setLogs[currentSet].push(log);
+                saveData();renderAll();showToast('PUNTO REGISTRADO');
+                document.querySelectorAll('.btn-action').forEach(x=>x.classList.remove('btn-selected'));actionInput.value="";
+            }else{showToast('Seleccione Atleta y Acción')}
         };
 
-        _0x1a9b(_0x4d2e[19]).onclick=()=>{if(confirm('¿Limpiar puntos del set?')){_0x99k=[];_0xsv();_0xrd()}};
-        _0x1a9b(_0x4d2e[20]).onclick=()=>{if(confirm('¿BORRAR TODO EL JUEGO?')){localStorage.clear();location.href="index_menu.html"}};
+        // Fijar y avanzar de Set
+        _0x1a9b('cSet').onclick=()=>{
+            if(confirm(`¿Estás seguro de cerrar y guardar de forma fija el SET ${currentSet}?`)){
+                if(currentSet < 3){
+                    currentSet++;
+                    _0x1a9b('setIndicator').textContent=`SET ${currentSet}`;
+                    saveData();
+                    // Cambiar el foco visual al set entrante de forma automática
+                    tabButtons[currentSet].click();
+                    showToast(`SET ${currentSet-1} ARCHIVADO. ¡INICIA EL SET ${currentSet}!`);
+                }else{
+                    showToast('¡Límite de 3 Sets alcanzado para este juego!');
+                }
+            }
+        };
 
-        _0xup();_0xrd()
-    })
-})()
+        _0x1a9b('ra').onclick=()=>{
+            if(confirm('¿Deseas resetear por completo el juego actual? Se borrarán todos los sets.')){
+                localStorage.clear();
+                location.href="index_menu.html";
+            }
+        };
+
+        updateDropdown();renderAll();
+    });
+})();
 </script>
 </body>
 </html>
