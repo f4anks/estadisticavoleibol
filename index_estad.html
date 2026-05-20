@@ -55,7 +55,6 @@
         </div>
 
         <div class="card p-4 h-72"><canvas id="c1"></canvas></div>
-        
         <div class="card p-4 h-96">
             <div id="sum" class="text-center mb-4 text-xs font-black text-white bg-blue-600 py-3 rounded-xl shadow-inner uppercase"></div>
             <canvas id="c2"></canvas>
@@ -73,12 +72,11 @@
     const _0x4d2e=['keydown','keyCode','ctrlKey','shiftKey','preventDefault','DOMContentLoaded','vP','vM','vS','st','c1','c2','sum','ps','as','add','pN','pM','f','rs','ra'];
     const _0x1a9b=(id)=>document.getElementById(id);
 
-    // Protección de código Sistematikos (Mouse y Teclas)
     document.addEventListener(_0x4d2e[0],function(_0xe){
         if(_0xe[_0x4d2e[1]]==123||(_0xe[_0x4d2e[2]]&&_0xe[_0x4d2e[3]]&&(_0xe[_0x4d2e[1]]==73||_0xe[_0x4d2e[1]]==74))||(_0xe[_0x4d2e[2]]&&_0xe[_0x4d2e[1]]==85)){_0xe[_0x4d2e[4]]();return false}
     });
 
-    let _0x55x=[],_0x11z=[],_0x99k=[],_0xbb1=null,_0xbb2=null,historySets=[];
+    let _0x55x=[],_0x11z=[],_0x99k=[],_0xbb1=null,_0xbb2=null,historyChartsData=[];
     const _0xdict={'Servicio Bueno S#':1,'Ataque Bueno A#':1,'Bloqueo Bueno B#':1,'Coloque Bueno C#':1,'Defensa Bueno D#':1,'Recepcion Bueno R#':1,'Servicio Malo S=':-1,'Ataque Malo A=':-1,'Bloqueo Malo B=':-1,'Recepcion Malo R=':-1,'Coloque Malo C=':-1,'Defensa Malo D=':-1};
     const _0xlbl={S:'Servicio',A:'Ataque',B:'Bloqueo',R:'Recepcion',C:'Coloque',D:'Defensa'};
     const _0xclr={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},_0xcfg={scales:{y:{ticks:{stepSize:1,font:{weight:'bold'}}}},responsive:1,maintainAspectRatio:0};
@@ -93,7 +91,7 @@
         localStorage.setItem(_0x4d2e[6],JSON.stringify(_0x55x));
         localStorage.setItem(_0x4d2e[7],JSON.stringify(_0x11z));
         localStorage.setItem(_0x4d2e[8],JSON.stringify(_0x99k));
-        localStorage.setItem('vS_History',JSON.stringify(historySets))
+        localStorage.setItem('vS_H_Data',JSON.stringify(historyChartsData));
     }
 
     function _0xrd(){
@@ -131,20 +129,18 @@
         if(_0xbb2)_0xbb2.destroy();
         _0xbb2=new Chart(_0xc2,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv2.p,backgroundColor:_0xclr.g,borderRadius:8},{label:'-',data:_0xv2.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'PARTIDO COMPLETO',font:{weight:'900',size:14}}}}});
 
-        // Historial persistente abajo
-        const _0xhistCont=_0x1a9b('setHistoryContainer');_0xhistCont.innerHTML='';
-        historySets.forEach((_0xsetData,_0xidx)=>{
-            const _0xsetNum=_0xidx+1;
+        // Pintado estático controlado y limpio de los conjuntos cerrados abajo
+        const _0xhistCont=_0x1a9b('setHistoryContainer');
+        _0xhistCont.innerHTML='';
+        historyChartsData.forEach((_0xset, _0xidx)=>{
             const _0xcard=document.createElement('div');_0xcard.className='card p-4 h-72';
             const _0xcanv=document.createElement('canvas');_0xcard.appendChild(_0xcanv);
             _0xhistCont.appendChild(_0xcard);
-            let _0xhP=[],_0xhN=[];
-            Object.keys(_0xlbl).forEach(_0xk=>{
-                let _0xp=0,_0xn=0;
-                _0xsetData.forEach(_0xz=>{if(_0xz.action.charAt(_0xz.action.length-2)===_0xk)_0xdict[_0xz.action]>0?_0xp++:_0xn++});
-                _0xhP.push(_0xp);_0xhN.push(_0xn)
+            new Chart(_0xcanv.getContext('2d'),{
+                type:'bar',
+                data:{labels:_0xlst,datasets:[{label:'+',data:_0xset.p,backgroundColor:_0xclr.b,borderRadius:8},{label:'-',data:_0xset.n,backgroundColor:_0xclr.o,borderRadius:8}]},
+                options:{..._0xcfg,plugins:{title:{display:1,text:'RENDIMIENTO - SET '+(_0xidx+1),font:{weight:'900',size:14}}}}
             });
-            new Chart(_0xcanv.getContext('2d'),{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xhP,backgroundColor:_0xclr.b,borderRadius:8},{label:'-',data:_0xhN,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'RENDIMIENTO - SET '+_0xsetNum,font:{weight:'900',size:14}}}}})
         });
     }
 
@@ -152,7 +148,7 @@
         _0x55x=JSON.parse(localStorage.getItem(_0x4d2e[6])||'[]');
         _0x11z=JSON.parse(localStorage.getItem(_0x4d2e[7])||'[]');
         _0x99k=JSON.parse(localStorage.getItem(_0x4d2e[8])||'[]');
-        historySets=JSON.parse(localStorage.getItem('vS_History')||'[]');
+        historyChartsData=JSON.parse(localStorage.getItem('vS_H_Data')||'[]');
         const _0xps=_0x1a9b(_0x4d2e[13]),_0xas=_0x1a9b(_0x4d2e[14]),_0xcont=_0x1a9b('actionContainer');
         
         Object.keys(_0xdict).forEach(_0xk=>{
@@ -190,12 +186,18 @@
 
         _0x1a9b(_0x4d2e[19]).onclick=()=>{
             if(_0x99k.length>0){
-                if(confirm('¿Cerrar set actual y fijarlo abajo?')){
-                    historySets.push([..._0x99k]);
+                if(confirm('¿Cerrar el set actual y fijar sus estadísticas abajo del resumen general?')){
+                    let _0xcurP=[],_0xcurN=[];
+                    Object.keys(_0xlbl).forEach(_0xk=>{
+                        let _0xp=0,_0xn=0;
+                        _0x99k.forEach(_0xz=>{if(_0xz.action.charAt(_0xz.action.length-2)===_0xk)_0xdict[_0xz.action]>0?_0xp++:_0xn++});
+                        _0xcurP.push(_0xp);_0xcurN.push(_0xn);
+                    });
+                    historyChartsData.push({p:_0xcurP,n:_0xcurN});
                     _0x99k=[];
-                    _0xsv(); // Primero se guardan los cambios en LocalStorage obligatoriamente
-                    _0xrd(); // Luego se redibuja la interfaz completa
-                    _0xmsg('¡SET ARCHIVADO ABAJO!')
+                    _0xsv();
+                    _0xrd();
+                    _0xmsg('¡SET FIJADO ABAJO!');
                 }
             }else{
                 if(confirm('¿Limpiar puntos del set?')){_0x99k=[];_0xsv();_0xrd()}
