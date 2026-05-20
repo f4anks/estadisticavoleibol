@@ -12,6 +12,7 @@
     <style>
         :root{--b:#0056FF}body{font-family:'Inter',system-ui,sans-serif;-webkit-user-select:none;user-select:none;background:#F3F4F6}.card{background:#fff;border-radius:1.5rem;box-shadow:0 4px 20px -2px rgba(0,0,0,0.1);border:1px solid rgba(0,0,0,0.05)}.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:1rem 2rem;border-radius:1rem;opacity:0;transition:opacity .3s;z-index:9999}.v{opacity:1}.app-input{background:#fff;border:2px solid #E5E7EB;padding:.8rem;border-radius:1rem;transition:all .2s;font-weight:600}.app-input:focus{border-color:var(--b);outline:0;box-shadow:0 0 0 2px rgba(0,86,255,0.2)}.btn-intense{transition:all .1s;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.1))}.btn-intense:active{transform:scale(0.96);filter:brightness(0.9)}.action-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.5rem}.btn-action{padding:.75rem .5rem;border-radius:.75rem;font-size:11px;font-weight:800;text-align:center;border:2px solid transparent;transition:all .2s;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;line-height:1.2}.btn-pos{background-color:#DBEAFE;color:#1E40AF;border-color:#BFDBFE}.btn-neg{background-color:#FEE2E2;color:#991B1B;border-color:#FECACA}.btn-selected{border-color:#000!important;transform:scale(1.03);box-shadow:0 4px 10px rgba(0,0,0,0.1)}
         .chart-container{height:260px;position:relative}
+        .hidden-chart{display:none!important}
     </style>
 </head>
 <body class="p-4 pb-12 text-gray-800" oncontextmenu="return false">
@@ -60,18 +61,18 @@
         </div>
 
         <div class="space-y-4">
-            <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400 text-center my-6">— DASHBOARD DE GRÁFICAS EN TIEMPO REAL —</h3>
+            <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400 text-center my-6">— DASHBOARD DE GRÁFICAS ACTIVAS —</h3>
             
-            <div class="card p-4">
+            <div id="wrapper-all" class="card p-4">
                 <div id="sum" class="text-center mb-3 text-xs font-black text-white bg-blue-600 py-2.5 rounded-xl uppercase"></div>
                 <div class="chart-container"><canvas id="c-all"></canvas></div>
             </div>
 
-            <div class="card p-4"><div class="chart-container"><canvas id="c-1"></canvas></div></div>
-            <div class="card p-4"><div class="chart-container"><canvas id="c-2"></canvas></div></div>
-            <div class="card p-4"><div class="chart-container"><canvas id="c-3"></canvas></div></div>
-            <div class="card p-4"><div class="chart-container"><canvas id="c-4"></canvas></div></div>
-            <div class="card p-4"><div class="chart-container"><canvas id="c-5"></canvas></div></div>
+            <div id="box-1" class="card p-4 hidden-chart"><div class="chart-container"><canvas id="c-1"></canvas></div></div>
+            <div id="box-2" class="card p-4 hidden-chart"><div class="chart-container"><canvas id="c-2"></canvas></div></div>
+            <div id="box-3" class="card p-4 hidden-chart"><div class="chart-container"><canvas id="c-3"></canvas></div></div>
+            <div id="box-4" class="card p-4 hidden-chart"><div class="chart-container"><canvas id="c-4"></canvas></div></div>
+            <div id="box-5" class="card p-4 hidden-chart"><div class="chart-container"><canvas id="c-5"></canvas></div></div>
         </div>
     </main>
 
@@ -95,7 +96,6 @@
     const categories={S:'Servicio',A:'Ataque',B:'Bloqueo',R:'Recepcion',C:'Coloque',D:'Defensa'};
     const colors={b:'#0056FF',r:'#dc2626',o:'#f97316',g:'#10b981'},chartConfig={responsive:1,maintainAspectRatio:0,scales:{y:{ticks:{stepSize:1,font:{weight:'bold'}}}}};
     
-    // Almacén de instancias de Charts individuales
     let chartInstances={ all:null, 1:null, 2:null, 3:null, 4:null, 5:null };
 
     function showToast(msg){
@@ -137,7 +137,7 @@
 
         if(!athletes.length){container.innerHTML='<p class="text-center text-gray-400 py-4 italic">Sin datos</p>';return}
 
-        // 1. Resumen de texto de Atletas (Acumulado General)
+        // 1. Resumen de texto de Atletas
         let metrics={};
         athletes.forEach(p=>metrics[p.number]={p:0,n:0,actions:{}});
 
@@ -159,14 +159,13 @@
 
         if(typeof Chart==='undefined')return;
 
-        // 2. Procesamiento de datos para los 6 gráficos simultáneos
+        // 2. Procesamiento de datos e inyección de visibilidad controlada
         let totalPos=0, totalNeg=0;
         let dataSetsStructure={
             all: {p:[], n:[]}, 1: {p:[], n:[]}, 2: {p:[], n:[]}, 3: {p:[], n:[]}, 4: {p:[], n:[]}, 5: {p:[], n:[]}
         };
 
         Object.keys(categories).forEach(k=>{
-            // Mapeo por Set Individual
             [1,2,3,4,5].forEach(sId=>{
                 let sp=0, sn=0;
                 setLogs[sId].forEach(z=>{
@@ -176,7 +175,6 @@
                 dataSetsStructure[sId].n.push(sn);
             });
 
-            // Mapeo Acumulado General (Total)
             let ap=0, an=0;
             allLogs.forEach(z=>{
                 if(z.action.charAt(z.action.length-2)===k){
@@ -187,18 +185,32 @@
             dataSetsStructure.all.n.push(an);
         });
 
-        // 3. Renderizado/Destrucción controlada de cada gráfica fija
+        // Gráfico General
         if(chartInstances.all) chartInstances.all.destroy();
         chartInstances.all = buildChart(_0x1a9b('c-all').getContext('2d'), 'BALANCE COMPLETO DEL PARTIDO', dataSetsStructure.all.p, dataSetsStructure.all.n, colors.g, true);
         _0x1a9b('sum').innerHTML=`GLOBAL - POS: ${totalPos} | NEG: ${totalNeg} | TOTAL: ${totalPos+totalNeg}`;
 
+        // CONTROL DE VISIBILIDAD DE TARJETAS DE SETS
         [1,2,3,4,5].forEach(sId=>{
-            if(chartInstances[sId]) chartInstances[sId].destroy();
-            chartInstances[sId] = buildChart(_0x1a9b(`c-${sId}`).getContext('2d'), `RENDIMIENTO - SET ${sId}`, dataSetsStructure[sId].p, dataSetsStructure[sId].n, colors.b, false);
+            const targetBox = _0x1a9b(`box-${sId}`);
+            
+            // Regla: Se muestra si es el set actual EN CURSO o si ya tiene datos guardados de jugadas pasadas
+            if(sId <= currentSet || setLogs[sId].length > 0) {
+                targetBox.classList.remove('hidden-chart');
+                
+                if(chartInstances[sId]) chartInstances[sId].destroy();
+                chartInstances[sId] = buildChart(_0x1a9b(`c-${sId}`).getContext('2d'), `RENDIMIENTO - SET ${sId}`, dataSetsStructure[sId].p, dataSetsStructure[sId].n, colors.b, false);
+            } else {
+                targetBox.classList.add('hidden-chart');
+                if(chartInstances[sId]) {
+                    chartInstances[sId].destroy();
+                    chartInstances[sId] = null;
+                }
+            }
         });
     }
 
-    document.addEventListener('DOMContentLoaded', ()=>{
+    document.addEventListener('DOMContentLoaded', RhineVoley=>{
         loadData();
         const selectMenu=_0x1a9b('ps'), actionInput=_0x1a9b('as'), actionsGrid=_0x1a9b('actionContainer');
         
@@ -224,46 +236,4 @@
             if(num&&name){
                 athletes.push({number:num,name:name});
                 saveData();updateDropdown();renderChartsAndStats();
-                _0x1a9b('pN').value='';_0x1a9b('pM').value='';
-                showToast('¡ATLETA REGISTRADO!');
-            }
-        };
-
-        _0x1a9b('f').onsubmit=e=>{
-            e.preventDefault();
-            if(selectMenu.value&&actionInput.value){
-                let log={playerNumber:parseInt(selectMenu.value),action:actionInput.value};
-                setLogs[currentSet].push(log);
-                saveData();renderChartsAndStats();showToast('PUNTO REGISTRADO');
-                document.querySelectorAll('.btn-action').forEach(x=>x.classList.remove('btn-selected'));actionInput.value="";
-            }else{showToast('Seleccione Atleta y Acción')}
-        };
-
-        // Avanzar de set de forma controlada hasta el Set 5
-        _0x1a9b('nextSet').onclick=()=>{
-            if(confirm(`¿Deseas cerrar el SET ${currentSet} e iniciar el siguiente?`)){
-                if(currentSet < 5){
-                    currentSet++;
-                    _0x1a9b('setIndicator').textContent=`SET ${currentSet}`;
-                    saveData();
-                    renderChartsAndStats();
-                    showToast(`SET ${currentSet-1} FIJADO. ENTRANDO AL SET ${currentSet}`);
-                }else{
-                    showToast('¡Has alcanzado el límite máximo de 5 Sets!');
-                }
-            }
-        };
-
-        _0x1a9b('ra').onclick=()=>{
-            if(confirm('¿Deseas resetear por completo el juego actual? Se borrarán los 5 sets.')){
-                localStorage.clear();
-                location.href="index_menu.html";
-            }
-        };
-
-        updateDropdown();renderChartsAndStats();
-    });
-})();
-</script>
-</body>
-</html>
+                _0x1a9b('pN').value='';_0x1
