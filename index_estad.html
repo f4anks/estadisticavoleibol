@@ -113,7 +113,7 @@
     function loadData(){
         athletes=JSON.parse(localStorage.getItem('vP')||'[]');
         setLogs=JSON.parse(localStorage.getItem('vS_Logs_v5')||'{"1":[],"2":[],"3":[],"4":[],"5":[]}');
-        currentSet=JSON.parse(localStorage.getItem('vS_Current_v5')||'1');
+        currentSet=parseInt(localStorage.getItem('vS_Current_v5')||'1');
         _0x1a9b('setIndicator').textContent=`SET ${currentSet}`;
     }
 
@@ -132,108 +132,4 @@
     }
 
     function renderChartsAndStats(){
-        const container=_0x1a9b('st');container.innerHTML='';
-        const allLogs=[...setLogs[1], ...setLogs[2], ...setLogs[3], ...setLogs[4], ...setLogs[5]];
-
-        if(!athletes.length){container.innerHTML='<p class="text-center text-gray-400 py-4 italic">Sin datos</p>';return}
-
-        // 1. Resumen de texto de Atletas
-        let metrics={};
-        athletes.forEach(p=>metrics[p.number]={p:0,n:0,actions:{}});
-
-        allLogs.forEach(log=>{
-            let m=metrics[log.playerNumber];
-            if(m){
-                let val=actionsDict[log.action], type=log.action.charAt(log.action.length-2);
-                val>0?m.p++:m.n++;
-                if(!m.actions[type])m.actions[type]={p:0,n:0};
-                val>0?m.actions[type].p++:m.actions[type].n++;
-            }
-        });
-
-        athletes.forEach(p=>{
-            let m=metrics[p.number], breakdown='';
-            Object.keys(m.actions).forEach(k=>breakdown+=`<span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">${k}:${m.actions[k].p}|${m.actions[k].n}</span> `);
-            container.innerHTML+=`<div class="bg-gray-50 p-4 rounded-2xl border border-gray-100 shadow-sm"><div class="flex justify-between items-center font-black text-sm mb-2"><span>#${p.number} ${p.name}</span><span class="text-blue-600 bg-white px-3 py-1 rounded-full shadow-sm">DIF: ${m.p-m.n}</span></div><div class="text-[10px] font-bold flex flex-wrap gap-1">${breakdown||'<span class="text-gray-400 italic">Sin acciones</span>'}</div></div>`;
-        });
-
-        if(typeof Chart==='undefined')return;
-
-        // 2. Procesamiento de datos e inyección de visibilidad controlada
-        let totalPos=0, totalNeg=0;
-        let dataSetsStructure={
-            all: {p:[], n:[]}, 1: {p:[], n:[]}, 2: {p:[], n:[]}, 3: {p:[], n:[]}, 4: {p:[], n:[]}, 5: {p:[], n:[]}
-        };
-
-        Object.keys(categories).forEach(k=>{
-            [1,2,3,4,5].forEach(sId=>{
-                let sp=0, sn=0;
-                setLogs[sId].forEach(z=>{
-                    if(z.action.charAt(z.action.length-2)===k) actionsDict[z.action]>0?sp++:sn++;
-                });
-                dataSetsStructure[sId].p.push(sp);
-                dataSetsStructure[sId].n.push(sn);
-            });
-
-            let ap=0, an=0;
-            allLogs.forEach(z=>{
-                if(z.action.charAt(z.action.length-2)===k){
-                    if(actionsDict[z.action]>0){ap++; totalPos++}else{an++; totalNeg++}
-                }
-            });
-            dataSetsStructure.all.p.push(ap);
-            dataSetsStructure.all.n.push(an);
-        });
-
-        // Gráfico General
-        if(chartInstances.all) chartInstances.all.destroy();
-        chartInstances.all = buildChart(_0x1a9b('c-all').getContext('2d'), 'BALANCE COMPLETO DEL PARTIDO', dataSetsStructure.all.p, dataSetsStructure.all.n, colors.g, true);
-        _0x1a9b('sum').innerHTML=`GLOBAL - POS: ${totalPos} | NEG: ${totalNeg} | TOTAL: ${totalPos+totalNeg}`;
-
-        // CONTROL DE VISIBILIDAD DE TARJETAS DE SETS
-        [1,2,3,4,5].forEach(sId=>{
-            const targetBox = _0x1a9b(`box-${sId}`);
-            
-            // Regla: Se muestra si es el set actual EN CURSO o si ya tiene datos guardados de jugadas pasadas
-            if(sId <= currentSet || setLogs[sId].length > 0) {
-                targetBox.classList.remove('hidden-chart');
-                
-                if(chartInstances[sId]) chartInstances[sId].destroy();
-                chartInstances[sId] = buildChart(_0x1a9b(`c-${sId}`).getContext('2d'), `RENDIMIENTO - SET ${sId}`, dataSetsStructure[sId].p, dataSetsStructure[sId].n, colors.b, false);
-            } else {
-                targetBox.classList.add('hidden-chart');
-                if(chartInstances[sId]) {
-                    chartInstances[sId].destroy();
-                    chartInstances[sId] = null;
-                }
-            }
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', RhineVoley=>{
-        loadData();
-        const selectMenu=_0x1a9b('ps'), actionInput=_0x1a9b('as'), actionsGrid=_0x1a9b('actionContainer');
-        
-        Object.keys(actionsDict).forEach(k=>{
-            const b=document.createElement('div');
-            const isPos=actionsDict[k]>0, splitText=k.split(' ');
-            b.innerHTML=`<span>${splitText[0]}</span><span class="text-lg">${splitText[2]}</span>`;
-            b.className=`btn-action ${isPos?'btn-pos':'btn-neg'}`;
-            b.onclick=()=>{document.querySelectorAll('.btn-action').forEach(x=>x.classList.remove('btn-selected'));b.classList.add('btn-selected');actionInput.value=k};
-            actionsGrid.appendChild(b);
-        });
-
-        function updateDropdown(){
-            selectMenu.innerHTML='<option value="" disabled selected>SELECCIONAR ATLETA</option>';
-            athletes.sort((a,b)=>a.number-b.number).forEach(p=>{
-                let o=document.createElement('option');o.value=p.number;o.textContent=`#${p.number} - ${p.name}`;
-                selectMenu.appendChild(o);
-            });
-        }
-
-        _0x1a9b('add').onclick=()=>{
-            let num=parseInt(_0x1a9b('pN').value), name=_0x1a9b('pM').value;
-            if(num&&name){
-                athletes.push({number:num,name:name});
-                saveData();updateDropdown();renderChartsAndStats();
-                _0x1a9b('pN').value='';_0x1
+        const container=_0x1a9b('st
