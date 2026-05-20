@@ -131,7 +131,7 @@
         if(_0xbb2)_0xbb2.destroy();
         _0xbb2=new Chart(_0xc2,{type:'bar',data:{labels:_0xlst,datasets:[{label:'+',data:_0xv2.p,backgroundColor:_0xclr.g,borderRadius:8},{label:'-',data:_0xv2.n,backgroundColor:_0xclr.o,borderRadius:8}]},options:{..._0xcfg,plugins:{title:{display:1,text:'PARTIDO COMPLETO',font:{weight:'900',size:14}}}}});
 
-        // Pintar de forma limpia las gráficas archivadas abajo sin alterar nada superior
+        // Historial persistente abajo
         const _0xhistCont=_0x1a9b('setHistoryContainer');_0xhistCont.innerHTML='';
         historySets.forEach((_0xsetData,_0xidx)=>{
             const _0xsetNum=_0xidx+1;
@@ -192,7 +192,10 @@
             if(_0x99k.length>0){
                 if(confirm('¿Cerrar set actual y fijarlo abajo?')){
                     historySets.push([..._0x99k]);
-                    _0x99k=[];_0xsv();_0xrd();_0xmsg('¡SET ARCHIVADO ABAJO!')
+                    _0x99k=[];
+                    _0xsv(); // Primero se guardan los cambios en LocalStorage obligatoriamente
+                    _0xrd(); // Luego se redibuja la interfaz completa
+                    _0xmsg('¡SET ARCHIVADO ABAJO!')
                 }
             }else{
                 if(confirm('¿Limpiar puntos del set?')){_0x99k=[];_0xsv();_0xrd()}
